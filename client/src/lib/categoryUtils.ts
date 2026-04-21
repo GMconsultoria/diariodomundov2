@@ -1,6 +1,7 @@
 /**
  * Convert category name to URL slug
  * Example: "Ciência e Tecnologia" -> "ciencia-e-tecnologia"
+ * Example: "Política" -> "politica"
  */
 export function categoryToSlug(category: string): string {
   return category
