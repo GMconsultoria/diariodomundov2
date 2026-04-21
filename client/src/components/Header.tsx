@@ -1,3 +1,4 @@
+const loginUrl = getLoginUrl();
 import { useState } from "react";
 import { Link } from "wouter";
 import { Search } from "lucide-react";
@@ -77,7 +78,23 @@ export default function Header() {
                 )}
               </>
             ) : (
-              <a href={getLoginUrl()} className="no-underline">
+              {isAuthenticated ? (
+  ...
+) : loginUrl ? (
+  <a href={loginUrl} className="no-underline">
+    <button className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm font-semibold">
+      Entrar
+    </button>
+  </a>
+) : (
+  <button
+    disabled
+    className="px-4 py-2 bg-gray-600 text-white rounded text-sm font-semibold cursor-not-allowed"
+    title="Login indisponível: configuração ausente"
+  >
+    Entrar
+  </button>
+)}
                 <button className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm font-semibold">
                   Entrar
                 </button>
@@ -152,7 +169,23 @@ export default function Header() {
               )}
             </>
           ) : (
-            <a href={getLoginUrl()} className="no-underline flex-1">
+            {isAuthenticated ? (
+  ...
+) : loginUrl ? (
+  <a href={loginUrl} className="no-underline">
+    <button className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm font-semibold">
+      Entrar
+    </button>
+  </a>
+) : (
+  <button
+    disabled
+    className="px-4 py-2 bg-gray-600 text-white rounded text-sm font-semibold cursor-not-allowed"
+    title="Login indisponível: configuração ausente"
+  >
+    Entrar
+  </button>
+)}
               <button className="w-full px-3 py-1 bg-red-600 text-white rounded text-xs font-semibold hover:bg-red-700 transition-colors">
                 Entrar
               </button>
