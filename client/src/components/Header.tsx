@@ -98,11 +98,6 @@ export default function Header() {
     Entrar
   </button>
 )}
-                <button className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm font-semibold">
-                  Entrar
-                </button>
-              </a>
-            )}
           </div>
 
           {/* Mobile Search Icon */}
@@ -171,10 +166,7 @@ export default function Header() {
                 </Link>
               )}
             </>
-          ) : (
-            {isAuthenticated ? (
-  ...
-) : loginUrl ? (
+          ) : loginUrl ? (
   <a href={loginUrl} className="no-underline">
     <button className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm font-semibold">
       Entrar
