@@ -64,12 +64,12 @@ export default function AdminLayout() {
               </button>
             </a>
           )
-        </div>
+        <div>
       </div>
     );
-  }
+  
 
-  const handleLogout = async () => {
+  const handleLogout = async () = {
     await logout();
     setLocation("/");
   };
