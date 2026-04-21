@@ -1,4 +1,3 @@
-const loginUrl = getLoginUrl();
 import { useState } from "react";
 import { Link } from "wouter";
 import { Search } from "lucide-react";
