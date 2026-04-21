@@ -1,3 +1,4 @@
+const loginUrl = getLoginUrl();
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Route, Switch, useLocation } from "wouter";
@@ -31,7 +32,21 @@ export default function AdminLayout() {
             Você precisa ser um administrador para acessar esta área.
           </p>
           {!isAuthenticated ? (
-            <a href={getLoginUrl()} className="no-underline">
+            {loginUrl ? (
+  <a href={loginUrl} className="no-underline">
+    <button className="px-6 py-3 bg-accent text-accent-foreground rounded-lg hover:bg-red-700 transition-colors font-semibold">
+      Fazer Login
+    </button>
+  </a>
+) : (
+  <button
+    disabled
+    className="px-6 py-3 bg-gray-500 text-white rounded-lg font-semibold cursor-not-allowed"
+    title="Login indisponível: configuração ausente"
+  >
+    Fazer Login
+  </button>
+)}
               <button className="px-6 py-3 bg-accent text-accent-foreground rounded-lg hover:bg-red-700 transition-colors font-semibold">
                 Fazer Login
               </button>
