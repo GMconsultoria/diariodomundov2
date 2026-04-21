@@ -9,6 +9,7 @@ const CATEGORIES = ["Política", "Economia", "Investimentos", "Ciência e Tecnol
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState("");
   const { user, isAuthenticated } = useAuth();
+  const loginUrl = getLoginUrl();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,8 +77,7 @@ export default function Header() {
                   </Link>
                 )}
               </>
-            ) : (
-              {isAuthenticated ? (
+            ) : loginUrl ? (
   <a href="/admin" className="no-underline">
     <button className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm font-semibold">
       Painel Admin
