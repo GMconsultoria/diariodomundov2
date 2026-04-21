@@ -181,11 +181,6 @@ export default function Header() {
     Entrar
   </button>
 )}
-              <button className="w-full px-3 py-1 bg-red-600 text-white rounded text-xs font-semibold hover:bg-red-700 transition-colors">
-                Entrar
-              </button>
-            </a>
-          )}
         </div>
       </div>
     </header>
