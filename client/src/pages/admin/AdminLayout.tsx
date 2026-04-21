@@ -1,4 +1,3 @@
-const loginUrl = getLoginUrl();
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Route, Switch, useLocation } from "wouter";
