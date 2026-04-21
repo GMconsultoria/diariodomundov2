@@ -56,14 +56,14 @@ export default function AdminLayout() {
               <button className="px-6 py-3 bg-accent text-accent-foreground rounded-lg hover:bg-red-700 transition-colors font-semibold">
                 Fazer Login
               </button>
-            </a>
+            <a>
           ) : (
             <a href="/" className="no-underline">
               <button className="px-6 py-3 bg-accent text-accent-foreground rounded-lg hover:bg-red-700 transition-colors font-semibold">
                 Voltar para Home
               </button>
             </a>
-          )}
+          )
         </div>
       </div>
     );
