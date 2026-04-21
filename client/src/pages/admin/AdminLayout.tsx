@@ -69,7 +69,7 @@ export default function AdminLayout() {
     );
   
 
-  const handleLogout = async () = {
+  const handleLogout = async () => {
     await logout();
     setLocation("/");
   };
