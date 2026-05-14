@@ -1,12 +1,12 @@
 import express from "express";
 import compression from "compression";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
-import { appRouter } from "../routers.js";
-import { createContext } from "./context.js";
-import { COOKIE_NAME, ONE_YEAR_MS } from "../../shared/const.js";
-import { ENV } from "./env.js";
-import * as db from "../db.js";
-import { getSessionCookieOptions, sdk } from "./sdk.js";
+import { appRouter } from "../routers";
+import { createContext } from "./context";
+import { COOKIE_NAME, ONE_YEAR_MS } from "../../shared/const";
+import { ENV } from "./env";
+import * as db from "../db";
+import { getSessionCookieOptions, sdk } from "./sdk";
 import { sql } from "drizzle-orm";
 import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";

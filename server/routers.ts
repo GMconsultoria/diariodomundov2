@@ -1,5 +1,5 @@
-import { COOKIE_NAME, CATEGORIES } from "../shared/const.js";
-import { getSessionCookieOptions } from "./_core/sdk.js";
+import { COOKIE_NAME, CATEGORIES } from "../shared/const";
+import { getSessionCookieOptions } from "./_core/sdk";
 import { Resend } from 'resend';
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
@@ -24,9 +24,9 @@ import {
   createContactMessage,
   getAllContactMessages,
   markMessageAsRead,
-} from "./db.js";
+} from "./db";
 import { TRPCError } from "@trpc/server";
-import { storagePut } from "./storage.js";
+import { storagePut } from "./storage";
 
 // Helper to generate slug from title
 function generateSlug(title: string): string {
