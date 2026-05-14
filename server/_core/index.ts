@@ -4,7 +4,7 @@ let cachedSitemap: string | null = null;
 let sitemapCacheTime: number = 0;
 const SITEMAP_CACHE_TTL = 24 * 60 * 60 * 1000; // 24 horas
 
-function getQueryParam(req: express.Request, name: string): string {
+function getQueryParam(req: any, name: string): string {
   const val = req.query[name];
   return typeof val === "string" ? val : "";
 }
