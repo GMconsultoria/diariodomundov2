@@ -1,5 +1,5 @@
 import { serial, pgEnum, pgTable, text, timestamp, varchar, boolean, index, integer } from "drizzle-orm/pg-core";
-import { CATEGORIES } from "../shared/const.js";
+const CATEGORIES = ["Política", "Economia", "Investimentos", "Ciência e Tecnologia", "Curiosidade"] as const;
 
 /**
  * Core user table backing auth flow.

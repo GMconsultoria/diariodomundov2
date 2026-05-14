@@ -1,4 +1,5 @@
-import { NOT_ADMIN_ERR_MSG, UNAUTHED_ERR_MSG } from '../../shared/const.js';
+const NOT_ADMIN_ERR_MSG = 'You do not have required permission (10002)';
+const UNAUTHED_ERR_MSG = 'Please login (10001)';
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import type { TrpcContext } from "./context.js";

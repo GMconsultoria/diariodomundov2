@@ -1,5 +1,7 @@
-import { COOKIE_NAME, CATEGORIES } from "../shared/const.js";
-import { getSessionCookieOptions } from "./_core/sdk.js";
+const COOKIE_NAME = "app_session_id";
+const ONE_YEAR_MS = 1000 * 60 * 60 * 24 * 365;
+const CATEGORIES = ["Política", "Economia", "Investimentos", "Ciência e Tecnologia", "Curiosidade"] as const;
+
 import { Resend } from 'resend';
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;

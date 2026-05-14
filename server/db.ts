@@ -4,7 +4,7 @@ import postgres from "postgres";
 import { InsertUser, users, posts, Post, InsertPost, postViews, contactMessages, InsertContactMessage, InsertPostView } from "../drizzle/schema.js";
 import { ENV } from './_core/env.js';
 import { z } from "zod";
-import { CATEGORIES } from "../shared/const.js";
+const CATEGORIES = ["Política", "Economia", "Investimentos", "Ciência e Tecnologia", "Curiosidade"] as const;
 
 const POST_SELECT_FIELDS = {
   id: posts.id,
