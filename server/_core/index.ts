@@ -31,6 +31,7 @@ export async function createApp() {
   // Confia no Vercel/Render proxy para capturar o IP real
   app.set("trust proxy", 1);
 
+  /*
   // Security: Global Hardening with Helmet
   app.use(helmet({
     contentSecurityPolicy: {
@@ -72,6 +73,7 @@ export async function createApp() {
     skip: () => process.env.NODE_ENV === "development",
   });
   app.use("/api/trpc/posts.incrementView", incrementViewLimiter);
+  */
 
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
