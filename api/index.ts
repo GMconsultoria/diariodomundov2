@@ -1,17 +1,17 @@
 import express from "express";
 import compression from "compression";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
-import { appRouter } from "../server/routers.js";
-import { createContext } from "../server/_core/context.js";
-import { ENV } from "../server/_core/env.js";
-import * as db from "../server/db.js";
+import { appRouter } from "./routers.js";
+import { createContext } from "./_core/context.js";
+import { ENV } from "./_core/env.js";
+import * as db from "./db.js";
 import { sql } from "drizzle-orm";
 import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
 import axios from "axios";
 const COOKIE_NAME = "app_session_id";
 const ONE_YEAR_MS = 1000 * 60 * 60 * 24 * 365;
-import { getSessionCookieOptions, sdk } from "../server/_core/sdk.js";
+import { getSessionCookieOptions, sdk } from "./_core/sdk.js";
 
 let app: any;
 
