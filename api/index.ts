@@ -1,5 +1,5 @@
 import express from "express";
-import { msg } from "./test";
+import { msg } from "./test.js";
 
 const app = express();
 app.get("/api/health", (req, res) => {
