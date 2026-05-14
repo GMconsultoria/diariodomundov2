@@ -30,6 +30,9 @@ export async function createApp() {
   // Performance: Enable Gzip compression
   app.use(compression());
 
+  // Confia no Vercel/Render proxy para capturar o IP real
+  app.set("trust proxy", 1);
+
   // Security: Global Hardening with Helmet
   app.use(helmet({
     contentSecurityPolicy: {
@@ -66,16 +69,9 @@ export async function createApp() {
 
   // Rate Limiting para incrementView
   const incrementViewLimiter = rateLimit({
-    windowMs: 60 * 1000, // 1 minuto
-    max: 100, // Max 100 views por IP por minuto
-    keyGenerator: (req) => {
-      // Considerar X-Forwarded-For para Render proxy
-      return req.headers['x-forwarded-for'] as string || req.ip || 'unknown';
-    },
-    skip: (req) => {
-      // Skip em localhost/dev
-      return process.env.NODE_ENV === 'development';
-    }
+    windowMs: 60 * 1000, // 1 minute
+    max: 100, // Limit each IP to 100 view increments per minute
+    skip: () => process.env.NODE_ENV === "development",
   });
   app.use("/api/trpc/posts.incrementView", incrementViewLimiter);
 
