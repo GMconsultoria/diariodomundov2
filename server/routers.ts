@@ -1,10 +1,10 @@
-import { COOKIE_NAME, CATEGORIES } from "../shared/const";
-import { getSessionCookieOptions } from "./_core/sdk";
+import { COOKIE_NAME, CATEGORIES } from "../shared/const.js";
+import { getSessionCookieOptions } from "./_core/sdk.js";
 import { Resend } from 'resend';
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router, adminProcedure, editorProcedure } from "./_core/trpc";
+import { systemRouter } from "./_core/systemRouter.js";
+import { publicProcedure, router, adminProcedure, editorProcedure } from "./_core/trpc.js";
 import { z } from "zod";
 import {
   createPost,
@@ -24,9 +24,9 @@ import {
   createContactMessage,
   getAllContactMessages,
   markMessageAsRead,
-} from "./db";
+} from "./db.js";
 import { TRPCError } from "@trpc/server";
-import { storagePut } from "./storage";
+import { storagePut } from "./storage.js";
 
 // Helper to generate slug from title
 function generateSlug(title: string): string {

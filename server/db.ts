@@ -1,10 +1,10 @@
 import { eq, like, desc, and, sql, gte, lte } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { InsertUser, users, posts, Post, InsertPost, postViews, contactMessages, InsertContactMessage, InsertPostView } from "../drizzle/schema";
-import { ENV } from './_core/env';
+import { InsertUser, users, posts, Post, InsertPost, postViews, contactMessages, InsertContactMessage, InsertPostView } from "../drizzle/schema.js";
+import { ENV } from './_core/env.js';
 import { z } from "zod";
-import { CATEGORIES } from "../shared/const";
+import { CATEGORIES } from "../shared/const.js";
 
 const POST_SELECT_FIELDS = {
   id: posts.id,
