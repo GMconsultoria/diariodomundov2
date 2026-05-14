@@ -1,6 +1,11 @@
 const COOKIE_NAME = "app_session_id";
 const ONE_YEAR_MS = 1000 * 60 * 60 * 24 * 365;
-import { ForbiddenError } from "../../shared/_core/errors.js";
+class ForbiddenError extends Error {
+  constructor(message = "Forbidden") {
+    super(message);
+    this.name = "ForbiddenError";
+  }
+}
 import { parse as parseCookieHeader } from "cookie";
 import type { Request } from "express";
 import { SignJWT, jwtVerify } from "jose";
