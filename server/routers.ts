@@ -1,4 +1,4 @@
-import { COOKIE_NAME, CATEGORIES } from "@shared/const";
+import { COOKIE_NAME, CATEGORIES } from "../shared/const";
 import { getSessionCookieOptions } from "./_core/sdk";
 import { Resend } from 'resend';
 

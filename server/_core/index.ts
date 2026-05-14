@@ -7,7 +7,7 @@ import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
-import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
+import { COOKIE_NAME, ONE_YEAR_MS } from "../../shared/const";
 import { ENV } from "./env";
 import * as db from "../db";
 import { getSessionCookieOptions, sdk } from "./sdk";
