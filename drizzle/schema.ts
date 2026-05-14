@@ -1,5 +1,5 @@
 import { serial, pgEnum, pgTable, text, timestamp, varchar, boolean, index, integer } from "drizzle-orm/pg-core";
-import { CATEGORIES } from "../shared/const";
+import { CATEGORIES } from "../shared/const.js";
 
 /**
  * Core user table backing auth flow.
