@@ -4,7 +4,6 @@ import compression from "compression";
 import axios from "axios";
 import { createServer } from "http";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
-import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { COOKIE_NAME, ONE_YEAR_MS } from "../../shared/const";
@@ -183,8 +182,6 @@ export async function createApp() {
   app.get("/api/version", (req, res) => {
     res.json({ version: "v1.3.0-stable" });
   });
-
-  registerStorageProxy(app);
 
   // OAuth Routes (Native Google OAuth 2.0)
   const loginHandler = (req: express.Request, res: express.Response) => {
