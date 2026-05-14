@@ -101,9 +101,23 @@ export default async function handler(req: any, res: any) {
         }
       });
 
-      server.get("/api/health", (req: any, res: any) => {
-        res.json({ ok: true, consolidated: true, timestamp: Date.now() });
-      });
+      server.get("/api/health", async (req, res) => {
+      try {
+        const dbStatus = await db.getDb().then(() => "connected").catch(e => `db_error: ${e.message}`);
+        res.json({ 
+          ok: true, 
+          env: process.env.NODE_ENV,
+          db: dbStatus,
+          timestamp: new Date().toISOString()
+        });
+      } catch (err: any) {
+        res.status(500).json({ 
+          ok: false, 
+          error: err.message,
+          stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+        });
+      }
+    });
 
       app = server;
     }
