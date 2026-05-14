@@ -6,16 +6,15 @@
   "installCommand": "pnpm install --no-frozen-lockfile",
   "functions": {
     "api/index.ts": {
-      "maxDuration": 30
+      "maxDuration": 30,
+      "includeFiles": "server/**,shared/**,drizzle/**"
     }
   },
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api" },
     { "source": "/sitemap.xml", "destination": "/api" },
     { "source": "/robots.txt", "destination": "/api" },
-    { "source": "/ads.txt", "destination": "/ads.txt" },
     { "source": "/manus-storage/(.*)", "destination": "/api" },
-    { "source": "/(.*)", "destination": "/$1" }
+    { "source": "/((?!assets/).*)", "destination": "/index.html" }
   ]
 }
-
