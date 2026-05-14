@@ -1,6 +1,7 @@
 const COOKIE_NAME = "app_session_id";
 const ONE_YEAR_MS = 1000 * 60 * 60 * 24 * 365;
 const CATEGORIES = ["Política", "Economia", "Investimentos", "Ciência e Tecnologia", "Curiosidade"] as const;
+import { getSessionCookieOptions } from "./_core/sdk.js";
 
 import { Resend } from 'resend';
 
