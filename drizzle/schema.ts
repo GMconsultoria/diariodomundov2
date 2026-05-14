@@ -1,49 +1,44 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, boolean, index } from "drizzle-orm/mysql-core";
+import { serial, pgEnum, pgTable, text, timestamp, varchar, boolean, index, integer } from "drizzle-orm/pg-core";
 import { CATEGORIES } from "../shared/const";
 
 /**
  * Core user table backing auth flow.
- * Extend this file with additional tables as your product grows.
- * Columns use camelCase to match both database fields and generated types.
  */
-export const users = mysqlTable("users", {
-  /**
-   * Surrogate primary key. Auto-incremented numeric value managed by the database.
-   * Use this for relations between tables.
-   */
-  id: int("id").autoincrement().primaryKey(),
-  /** Manus OAuth identifier (openId) returned from the OAuth callback. Unique per user. */
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
   openId: varchar("openId", { length: 64 }).notNull().unique(),
   name: text("name"),
   email: varchar("email", { length: 320 }),
   loginMethod: varchar("loginMethod", { length: 64 }),
-  role: mysqlEnum("role", ["admin", "editor", "reader"]).default("reader").notNull(),
+  role: text("role").default("reader").notNull(), // PostgreSQL handles enums differently or use text with check
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
 });
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
+export const categoryEnum = pgEnum("category", CATEGORIES as [string, ...string[]]);
+
 /**
  * Posts table for news articles
  */
-export const posts = mysqlTable("posts", {
-  id: int("id").autoincrement().primaryKey(),
+export const posts = pgTable("posts", {
+  id: serial("id").primaryKey(),
   title: varchar("title", { length: 255 }).notNull(),
   slug: varchar("slug", { length: 255 }).notNull().unique(),
   subtitle: text("subtitle"),
   content: text("content").notNull(),
-  imageUrl: text("imageUrl", { length: "long" }),
+  imageUrl: text("imageUrl"),
   imageKey: varchar("imageKey", { length: 255 }),
-  category: mysqlEnum("category", CATEGORIES as unknown as [string, ...string[]]).notNull(),
+  category: categoryEnum("category").notNull(),
   author: varchar("author", { length: 255 }).notNull(),
-  authorId: int("author_id"),
+  authorId: integer("author_id"),
   published: boolean("published").default(false).notNull(),
-  views: int("views").default(0).notNull(),
+  views: integer("views").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
   publishedAt: timestamp("publishedAt"),
 }, (table) => {
   return {
@@ -59,9 +54,9 @@ export type InsertPost = typeof posts.$inferInsert;
 /**
  * Historical views tracking for detailed dashboard metrics
  */
-export const postViews = mysqlTable("post_views", {
-  id: int("id").autoincrement().primaryKey(),
-  postId: int("postId").notNull(),
+export const postViews = pgTable("post_views", {
+  id: serial("id").primaryKey(),
+  postId: integer("postId").notNull(),
   viewedAt: timestamp("viewedAt").defaultNow().notNull(),
 }, (table) => {
   return {
@@ -72,11 +67,12 @@ export const postViews = mysqlTable("post_views", {
 
 export type PostView = typeof postViews.$inferSelect;
 export type InsertPostView = typeof postViews.$inferInsert;
+
 /**
  * Contact messages from the contact form
  */
-export const contactMessages = mysqlTable("contact_messages", {
-  id: int("id").autoincrement().primaryKey(),
+export const contactMessages = pgTable("contact_messages", {
+  id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 320 }).notNull(),
   subject: varchar("subject", { length: 255 }).notNull(),

@@ -1,5 +1,6 @@
 import { eq, like, desc, and, sql, gte, lte } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/mysql2";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 import { InsertUser, users, posts, Post, InsertPost, postViews, contactMessages, InsertContactMessage, InsertPostView } from "../drizzle/schema";
 import { ENV } from './_core/env';
 import { z } from "zod";
@@ -30,20 +31,9 @@ let _db: ReturnType<typeof drizzle> | null = null;
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
-      _db = drizzle(process.env.DATABASE_URL);
-      
-      // Nuclear Option: Force create column if drizzle-kit push failed
-      console.log("[Database] Checking for schema updates...");
-      await _db.execute(sql`
-        ALTER TABLE \`posts\` 
-        ADD COLUMN IF NOT EXISTS \`author_id\` INT AFTER \`author\`
-      `).catch(err => {
-        // Ignore "Duplicate column name" error, but log others
-        if (!err.message?.includes("Duplicate column")) {
-          console.error("[Database] Auto-migration error:", err.message);
-        }
-      });
-      
+      const client = postgres(process.env.DATABASE_URL);
+      _db = drizzle(client);
+      console.log("[Database] PostgreSQL connection established");
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
       _db = null;
@@ -102,7 +92,8 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       updateSet.lastSignedIn = new Date();
     }
 
-    await db.insert(users).values(values).onDuplicateKeyUpdate({
+    await db.insert(users).values(values).onConflictDoUpdate({
+      target: users.openId,
       set: updateSet,
     });
   } catch (error) {
@@ -139,8 +130,7 @@ export async function updateUserRole(userId: number, role: "admin" | "editor" | 
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   try {
-    const query = sql`UPDATE \`users\` SET \`role\` = ${role} WHERE \`id\` = ${userId}`;
-    await db.execute(query);
+    await db.update(users).set({ role }).where(eq(users.id, userId));
   } catch (error: any) {
     console.error(`[Database] Failed to update user role for ID ${userId}. Error: ${error.message}`);
     throw error;
@@ -152,8 +142,7 @@ export async function createPost(post: InsertPost): Promise<Post> {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   
-  const result = await db.insert(posts).values(post);
-  const [created] = await db.select().from(posts).where(eq(posts.id, result[0].insertId)).limit(1);
+  const [created] = await db.insert(posts).values(post).returning();
   if (!created) throw new Error("Failed to retrieve created post");
   return created;
 }
@@ -162,10 +151,8 @@ export async function updatePost(id: number, post: Partial<InsertPost>): Promise
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   
-  await db.update(posts).set(post).where(eq(posts.id, id));
-  const result = await db.select().from(posts).where(eq(posts.id, id)).limit(1);
-  
-  return result[0];
+  const [result] = await db.update(posts).set(post).where(eq(posts.id, id)).returning();
+  return result;
 }
 
 export async function deletePost(id: number): Promise<boolean> {
@@ -238,14 +225,14 @@ export async function searchPosts(query: string, limit: number = 50): Promise<an
       and(
         eq(posts.published, true),
         lte(posts.publishedAt, new Date()),
-        sql`(${posts.title} LIKE ${searchTerm} OR ${posts.subtitle} LIKE ${searchTerm} OR ${posts.content} LIKE ${searchTerm})`
+        sql`(${posts.title} ILIKE ${searchTerm} OR ${posts.subtitle} ILIKE ${searchTerm} OR ${posts.content} ILIKE ${searchTerm})`
       )
     )
     .orderBy(desc(posts.publishedAt))
     .limit(limit);
 }
 
-export async function getAllPostsAdmin(limit: number = 100, offset: number = 0, category?: string, search?: string, author?: string) {
+export async function getAllPostsAdmin(limit: number = 100, offset: number = 0, category?: string, search?: string, author?: string, authorIdFilter?: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   
@@ -256,6 +243,7 @@ export async function getAllPostsAdmin(limit: number = 100, offset: number = 0, 
   }
   if (search) conditions.push(like(posts.title, `%${search}%`));
   if (author) conditions.push(like(posts.author, `%${author}%`));
+  if (authorIdFilter !== undefined) conditions.push(eq(posts.authorId, authorIdFilter));
 
   return await db
     .select(POST_SELECT_FIELDS)
@@ -281,15 +269,15 @@ export async function getDashboardStats(startDate?: string, endDate?: string) {
   try {
     // Basic counters
     const [counts] = await db.select({
-      totalPosts: sql<number>`COUNT(*)`,
-      totalViews: sql<number>`COALESCE(SUM(${posts.views}), 0)`,
+      totalPosts: sql<number>`count(*)::int`,
+      totalViews: sql<number>`coalesce(sum(${posts.views}), 0)::int`,
     }).from(posts);
 
     const [totalUsers] = await db.select({ 
-      count: sql<number>`COUNT(*)` 
+      count: sql<number>`count(*)::int` 
     }).from(users);
 
-    // Views by day - Failsafe: Fetch and group in JS
+    // Views by day
     let dateFilter: any = undefined;
     if (startDate && endDate) {
       const endOfDay = new Date(endDate);
@@ -310,8 +298,8 @@ export async function getDashboardStats(startDate?: string, endDate?: string) {
     let rawViews: any[] = [];
     try {
       rawViews = await db.select({
-        day: sql<string>`DATE_FORMAT(${postViews.viewedAt}, '%Y-%m-%d')`,
-        count: sql<number>`COUNT(*)`
+        day: sql<string>`to_char(${postViews.viewedAt}, 'YYYY-MM-DD')`,
+        count: sql<number>`count(*)::int`
       })
       .from(postViews)
       .where(dateFilter)
@@ -323,7 +311,6 @@ export async function getDashboardStats(startDate?: string, endDate?: string) {
 
     const viewMap = new Map(rawViews.map(v => [v.day, Number(v.count)]));
     
-    // Always generate the date range to ensure LineChart has data points
     const start = startDate ? new Date(startDate) : (() => { const d = new Date(); d.setDate(d.getDate() - 30); return d; })();
     const end = endDate ? new Date(endDate) : new Date();
     
@@ -338,25 +325,22 @@ export async function getDashboardStats(startDate?: string, endDate?: string) {
       });
     }
 
-    // Views by category - Aggregated in SQL
     const viewsByCategory = await db.select({
       category: posts.category,
-      count: sql<number>`SUM(${posts.views})`,
+      count: sql<number>`sum(${posts.views})::int`,
     })
     .from(posts)
     .groupBy(posts.category);
 
-    // Top 5 authors - Aggregated in SQL
     const topAuthors = await db.select({
       author: posts.author,
-      count: sql<number>`COUNT(*)`,
+      count: sql<number>`count(*)::int`,
     })
     .from(posts)
     .groupBy(posts.author)
-    .orderBy(desc(sql`COUNT(*)`))
+    .orderBy(desc(sql`count(*)`))
     .limit(5);
 
-    // Top 10 most viewed posts
     const topPosts = await db.select({
       id: posts.id,
       title: posts.title,
@@ -422,14 +406,12 @@ export async function incrementPostViews(id: number): Promise<void> {
     return;
   }
   
-  // Step 1: Increment post view counter
   try {
     await db.update(posts).set({ views: sql`${posts.views} + 1` }).where(eq(posts.id, id));
   } catch (error) {
     console.error(`[Database] Failed to increment posts.views for post ${id}:`, error);
   }
 
-  // Step 2: Insert into post_views history (for daily chart)
   try {
     await db.insert(postViews).values({ postId: id });
   } catch (error) {

@@ -98,28 +98,28 @@ async function startServer() {
       if (database) {
         console.log("[Migration] Ensuring contact_messages table exists...");
         await database.execute(sql.raw(`
-          CREATE TABLE IF NOT EXISTS \`contact_messages\` (
-            \`id\` int AUTO_INCREMENT PRIMARY KEY,
-            \`name\` varchar(255) NOT NULL,
-            \`email\` varchar(320) NOT NULL,
-            \`subject\` varchar(255) NOT NULL,
-            \`message\` text NOT NULL,
-            \`read\` boolean NOT NULL DEFAULT false,
-            \`createdAt\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+          CREATE TABLE IF NOT EXISTS "contact_messages" (
+            "id" SERIAL PRIMARY KEY,
+            "name" varchar(255) NOT NULL,
+            "email" varchar(320) NOT NULL,
+            "subject" varchar(255) NOT NULL,
+            "message" text NOT NULL,
+            "read" boolean NOT NULL DEFAULT false,
+            "createdAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
           )
         `));
         console.log("[Migration] contact_messages table checked/created.");
 
         console.log("[Migration] Ensuring post_views table exists...");
         await database.execute(sql.raw(`
-          CREATE TABLE IF NOT EXISTS \`post_views\` (
-            \`id\` int AUTO_INCREMENT PRIMARY KEY,
-            \`postId\` int NOT NULL,
-            \`viewedAt\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            INDEX \`post_id_idx\` (\`postId\`),
-            INDEX \`viewed_at_idx\` (\`viewedAt\`)
+          CREATE TABLE IF NOT EXISTS "post_views" (
+            "id" SERIAL PRIMARY KEY,
+            "postId" int NOT NULL,
+            "viewedAt" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
           )
         `));
+        await database.execute(sql.raw(`CREATE INDEX IF NOT EXISTS "post_id_idx" ON "post_views" ("postId")`));
+        await database.execute(sql.raw(`CREATE INDEX IF NOT EXISTS "viewed_at_idx" ON "post_views" ("viewedAt")`));
         console.log("[Migration] post_views table checked/created.");
       }
     } catch (err: any) {
