@@ -5,7 +5,6 @@ import { Resend } from 'resend';
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router, adminProcedure, editorProcedure } from "./_core/trpc";
-import { fileTypeFromBuffer } from "file-type";
 import { z } from "zod";
 import {
   createPost,
@@ -234,12 +233,11 @@ export const appRouter = router({
         .mutation(async ({ input }) => {
           try {
             const buffer = Buffer.from(input.data, "base64");
-            const detected = await fileTypeFromBuffer(buffer);
-            if (!detected || !["image/jpeg", "image/png", "image/webp", "image/gif"].includes(detected.mime)) {
-              throw new TRPCError({ code: "BAD_REQUEST", message: "Formato de imagem inválido" });
-            }
+            const mimeType = input.filename.toLowerCase().endsWith('.png') ? 'image/png' : 
+                             input.filename.toLowerCase().endsWith('.webp') ? 'image/webp' : 
+                             input.filename.toLowerCase().endsWith('.gif') ? 'image/gif' : 'image/jpeg';
             const key = `posts/${Date.now()}-${input.filename}`;
-            const { url, key: storageKey } = await storagePut(key, buffer, detected.mime);
+            const { url, key: storageKey } = await storagePut(key, buffer, mimeType);
             return { url, key: storageKey };
           } catch (error: any) {
             console.error("[Upload] Critical failure:", error);
