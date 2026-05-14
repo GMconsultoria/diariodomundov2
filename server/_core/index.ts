@@ -7,7 +7,6 @@ import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
-import { serveStatic, setupVite } from "./vite";
 import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
 import { ENV } from "./env";
 import * as db from "../db";
@@ -312,9 +311,11 @@ async function startServer() {
 
   // STATIC FILES / SPA FALLBACK - MUST be last
   if (process.env.NODE_ENV === "development") {
+    const { setupVite } = await import("./vite");
     await setupVite(app, server);
-  } else {
+  } else if (!process.env.VERCEL) {
     console.log("[Server] Setting up static file serving");
+    const { serveStatic } = await import("./vite");
     serveStatic(app);
   }
 
