@@ -300,30 +300,3 @@ export async function createApp() {
   return app;
 }
 
-async function startServer() {
-  console.log("[Server] Version: 1.3.0-stable");
-  const app = await createApp();
-  const server = createServer(app);
-
-  // STATIC FILES / SPA FALLBACK - MUST be last
-  if (process.env.NODE_ENV === "development") {
-    const { setupVite } = await import("./vite");
-    await setupVite(app, server);
-  } else if (!process.env.VERCEL) {
-    console.log("[Server] Setting up static file serving");
-    const { serveStatic } = await import("./vite");
-    serveStatic(app);
-  }
-
-  const port = parseInt(process.env.PORT || "3000");
-
-  server.listen(port, "0.0.0.0", () => {
-    console.log(`Server running on port ${port}`);
-  });
-}
-
-// Only start standalone server when NOT running on Vercel
-if (!process.env.VERCEL) {
-  startServer().catch(console.error);
-}
-
