@@ -25,10 +25,8 @@ function getQueryParam(req: express.Request, name: string): string {
   return typeof val === "string" ? val : "";
 }
 
-async function startServer() {
-  console.log("[Server] Version: 1.3.0-stable");
+export async function createApp() {
   const app = express();
-  const server = createServer(app);
 
   // Performance: Enable Gzip compression
   app.use(compression());
@@ -304,6 +302,14 @@ async function startServer() {
     })
   );
 
+  return app;
+}
+
+async function startServer() {
+  console.log("[Server] Version: 1.3.0-stable");
+  const app = await createApp();
+  const server = createServer(app);
+
   // STATIC FILES / SPA FALLBACK - MUST be last
   if (process.env.NODE_ENV === "development") {
     await setupVite(app, server);
@@ -312,7 +318,6 @@ async function startServer() {
     serveStatic(app);
   }
 
-
   const port = parseInt(process.env.PORT || "3000");
 
   server.listen(port, "0.0.0.0", () => {
@@ -320,4 +325,8 @@ async function startServer() {
   });
 }
 
-startServer().catch(console.error);
+// Only start standalone server when NOT running on Vercel
+if (!process.env.VERCEL) {
+  startServer().catch(console.error);
+}
+

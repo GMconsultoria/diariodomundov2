@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "buildCommand": "npx vite build",
+  "outputDirectory": "dist/public",
+  "framework": null,
+  "installCommand": "npm install",
+  "functions": {
+    "api/index.ts": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api" },
+    { "source": "/sitemap.xml", "destination": "/api" },
+    { "source": "/robots.txt", "destination": "/api" },
+    { "source": "/ads.txt", "destination": "/ads.txt" },
+    { "source": "/manus-storage/(.*)", "destination": "/api" },
+    { "source": "/(.*)", "destination": "/$1" }
+  ]
+}
