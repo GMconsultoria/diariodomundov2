@@ -1,18 +1,4 @@
 import "dotenv/config";
-import express from "express";
-import compression from "compression";
-import axios from "axios";
-import { createServer } from "http";
-import { createExpressMiddleware } from "@trpc/server/adapters/express";
-import { appRouter } from "../routers";
-import { createContext } from "./context";
-import { COOKIE_NAME, ONE_YEAR_MS } from "../../shared/const";
-import { ENV } from "./env";
-import * as db from "../db";
-import { getSessionCookieOptions, sdk } from "./sdk";
-import { sql } from "drizzle-orm";
-import helmet from "helmet";
-import { rateLimit } from "express-rate-limit";
 
 let cachedSitemap: string | null = null;
 let sitemapCacheTime: number = 0;
@@ -24,6 +10,19 @@ function getQueryParam(req: express.Request, name: string): string {
 }
 
 export async function createApp() {
+  const express = (await import("express")).default;
+  const compression = (await import("compression")).default;
+  const { createExpressMiddleware } = await import("@trpc/server/adapters/express");
+  const { appRouter } = await import("../routers");
+  const { createContext } = await import("./context");
+  const { COOKIE_NAME, ONE_YEAR_MS } = await import("../../shared/const");
+  const { ENV } = await import("./env");
+  const db = await import("../db");
+  const { getSessionCookieOptions, sdk } = await import("./sdk");
+  const { sql } = await import("drizzle-orm");
+  const helmet = (await import("helmet")).default;
+  const { rateLimit } = await import("express-rate-limit");
+
   const app = express();
 
   // Performance: Enable Gzip compression
