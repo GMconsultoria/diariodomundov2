@@ -96,8 +96,9 @@ export default async function handler(req: any, res: any) {
           try { if (state) returnTo = JSON.parse(state).returnTo || "/"; } catch (e) {}
           return res.redirect(302, returnTo);
         } catch (error: any) {
-          console.error("[OAuth] Error:", error.message);
-          return res.status(500).send("Login failed");
+          const detail = error.response?.data?.error_description || error.response?.data?.error || error.message;
+          console.error("[OAuth] Error:", detail);
+          return res.status(500).send(`Login failed: ${detail}`);
         }
       });
 
