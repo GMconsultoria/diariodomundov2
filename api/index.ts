@@ -85,7 +85,6 @@ export default async function handler(req: any, res: any) {
             openId: googleUser.id,
             email: googleUser.email,
             name: googleUser.name,
-            avatarUrl: googleUser.picture,
             role: "user"
           });
 
@@ -96,7 +95,7 @@ export default async function handler(req: any, res: any) {
           try { if (state) returnTo = JSON.parse(state).returnTo || "/"; } catch (e) {}
           return res.redirect(302, returnTo);
         } catch (error: any) {
-          const detail = error.response?.data?.error_description || error.response?.data?.error || error.message;
+          const detail = error.detail || error.message;
           console.error("[OAuth] Error:", detail);
           return res.status(500).send(`Login failed: ${detail}`);
         }
