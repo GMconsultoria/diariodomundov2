@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
-import { ENV } from "./_core/env";
+import { ENV } from "./_core/env.js";
 
 // Configure Cloudinary
 if (ENV.cloudinaryCloudName && ENV.cloudinaryApiKey && ENV.cloudinaryApiSecret) {

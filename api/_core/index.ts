@@ -1,13 +1,13 @@
 import express from "express";
 import compression from "compression";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
-import { appRouter } from "../routers";
-import { createContext } from "./context";
+import { appRouter } from "../routers.js";
+import { createContext } from "./context.js";
 const COOKIE_NAME = "app_session_id";
 const ONE_YEAR_MS = 1000 * 60 * 60 * 24 * 365;
-import { ENV } from "./env";
-import * as db from "../db";
-import { getSessionCookieOptions, sdk } from "./sdk";
+import { ENV } from "./env.js";
+import * as db from "../db.js";
+import { getSessionCookieOptions, sdk } from "./sdk.js";
 import { sql } from "drizzle-orm";
 import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
