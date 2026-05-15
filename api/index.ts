@@ -95,10 +95,13 @@ export default async function handler(req: any, res: any) {
           try { if (state) returnTo = JSON.parse(state).returnTo || "/"; } catch (e) {}
           return res.redirect(302, returnTo);
         } catch (error: any) {
+          const pgCode = error.code ? `[Code: ${error.code}] ` : '';
+          const cause = error.cause ? ` | Cause: ${error.cause.message || error.cause}` : '';
           const detail = error.detail || error.message;
-          console.error("[OAuth] Error:", detail);
-          return res.status(500).send(`Login failed: ${detail}`);
+          console.error("[OAuth] Error:", error);
+          return res.status(500).send(`Login failed: ${pgCode}${detail}${cause}`);
         }
+
       });
 
       server.get("/api/health", async (req, res) => {
