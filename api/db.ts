@@ -83,8 +83,8 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       values.role = user.role;
     }
 
-    // Força a role de admin para o dono do site
-    if (user.openId === ENV.ownerOpenId || user.email === 'diariodomundonews@gmail.com') {
+    // Força a role de admin se for o dono configurado via .env
+    if (user.openId === ENV.ownerOpenId && ENV.ownerOpenId !== "") {
       values.role = 'admin';
       updateSet.role = 'admin'; // Força atualização caso tenha perdido
     }
