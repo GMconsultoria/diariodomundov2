@@ -59,17 +59,17 @@
     "typescript": "5.9.3",
     "vite": "^7.1.7",
     "wouter": "^3.3.5",
-    "zod": "^4.1.12"
+    "zod": "^4.1.12",
+    "@builder.io/vite-plugin-jsx-loc": "^0.1.1",
+    "drizzle-kit": "^0.31.4"
   },
   "devDependencies": {
-    "@builder.io/vite-plugin-jsx-loc": "^0.1.1",
     "@types/compression": "^1.8.1",
     "@types/dompurify": "^3.2.0",
     "@types/express": "4.17.21",
     "@types/node": "^24.7.0",
     "@types/react": "^19.2.1",
     "@types/react-dom": "^19.2.1",
-    "drizzle-kit": "^0.31.4",
     "prettier": "^3.6.2",
     "vitest": "^2.1.4"
   },
