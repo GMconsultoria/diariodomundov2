@@ -77,12 +77,16 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       values.lastSignedIn = user.lastSignedIn;
       updateSet.lastSignedIn = user.lastSignedIn;
     }
+
+    // Apenas define a role no INSERT, não sobrescreve no UPDATE (para não perder o cargo)
     if (user.role !== undefined) {
       values.role = user.role;
-      updateSet.role = user.role;
-    } else if (user.openId === ENV.ownerOpenId) {
+    }
+
+    // Força a role de admin para o dono do site
+    if (user.openId === ENV.ownerOpenId || user.email === 'diariodomundonews@gmail.com') {
       values.role = 'admin';
-      updateSet.role = 'admin';
+      updateSet.role = 'admin'; // Força atualização caso tenha perdido
     }
 
     if (!values.lastSignedIn) {
