@@ -11,8 +11,6 @@ import { getSessionCookieOptions, sdk } from "./sdk";
 import { sql } from "drizzle-orm";
 import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
-import axios from "axios";
-
 let cachedSitemap: string | null = null;
 let sitemapCacheTime: number = 0;
 const SITEMAP_CACHE_TTL = 24 * 60 * 60 * 1000; // 24 horas
@@ -215,36 +213,40 @@ export async function createApp() {
       const origin = ENV.baseUrl || `${protocol}://${req.get("host")}`;
       const redirectUri = `${origin}/api/oauth/callback`;
 
-      // 1. Exchange code for Google Access Token
-      const tokenResponse = await axios.post("https://oauth2.googleapis.com/token", {
-        client_id: ENV.googleClientId,
-        client_secret: ENV.googleClientSecret,
-        code,
-        grant_type: "authorization_code",
-        redirect_uri: redirectUri
+      const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          client_id: ENV.googleClientId,
+          client_secret: ENV.googleClientSecret,
+          code,
+          grant_type: "authorization_code",
+          redirect_uri: redirectUri
+        })
       });
+      const tokenData = await tokenRes.json();
+      if (!tokenRes.ok) throw new Error(tokenData.error_description || tokenData.error || "Token exchange failed");
 
       // 2. Fetch User Profile from Google
-      const userResponse = await axios.get("https://www.googleapis.com/oauth2/v2/userinfo", {
-        headers: { Authorization: `Bearer ${tokenResponse.data.access_token}` }
+      const userRes = await fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
+        headers: { Authorization: `Bearer ${tokenData.access_token}` }
       });
-
-      const googleUser = userResponse.data;
+      const googleUser = await userRes.json();
+      if (!userRes.ok) throw new Error("Failed to fetch user info");
       
       // 3. Save or update user in database
       await db.upsertUser({
         openId: googleUser.id,
         email: googleUser.email,
         name: googleUser.name,
-        avatarUrl: googleUser.picture,
-        role: "user"
+        role: "reader"
       });
 
       // 4. Create local session (cookie-based)
-      const session = await sdk.createSession(googleUser.id);
+      const sessionToken = await sdk.createSessionToken(googleUser.id, { name: googleUser.name });
       const cookieOptions = getSessionCookieOptions();
       
-      res.cookie(COOKIE_NAME, session.id, cookieOptions);
+      res.cookie(COOKIE_NAME, sessionToken, cookieOptions);
 
       // 5. Redirect back to original page
       let returnTo = "/";
@@ -267,7 +269,7 @@ export async function createApp() {
     return res.json({ success: true });
   });
 
-  app.get("/api/auth/me", createContext, (req: any, res) => {
+  app.get("/api/auth/me", createContext, (req: any, res: express.Response) => {
     return res.json({ user: req.user || null });
   });
 

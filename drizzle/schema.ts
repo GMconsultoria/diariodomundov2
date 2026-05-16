@@ -1,5 +1,5 @@
 import { serial, pgEnum, pgTable, text, timestamp, varchar, boolean, index, integer } from "drizzle-orm/pg-core";
-const CATEGORIES = ["Política", "Economia", "Investimentos", "Ciência e Tecnologia", "Curiosidade"] as const;
+export const CATEGORIES = ["Política", "Economia", "Investimentos", "Ciência e Tecnologia", "Curiosidade"] as const;
 
 /**
  * Core user table backing auth flow.
@@ -19,7 +19,7 @@ export const users = pgTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-export const categoryEnum = pgEnum("category", CATEGORIES as [string, ...string[]]);
+export const categoryEnum = pgEnum("category", CATEGORIES as unknown as [string, ...string[]]);
 
 /**
  * Posts table for news articles

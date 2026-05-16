@@ -16,7 +16,6 @@ export default function Header() {
   };
   
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
 
   const [, setLocation] = useLocation();
 
@@ -140,18 +139,10 @@ export default function Header() {
                   </div>
                 )}
               </div>
-            ) : loginUrl ? (
+            ) : (
               <button 
                 onClick={handleLogin}
                 className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm font-semibold"
-              >
-                Entrar
-              </button>
-            ) : (
-              <button
-                disabled
-                className="px-4 py-2 bg-gray-600 text-white rounded text-sm font-semibold cursor-not-allowed"
-                title="Login indisponível: configuração ausente"
               >
                 Entrar
               </button>

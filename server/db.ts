@@ -1,10 +1,9 @@
 import { eq, like, desc, and, sql, gte, lte } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { InsertUser, users, posts, Post, InsertPost, postViews, contactMessages, InsertContactMessage, InsertPostView } from "../drizzle/schema.js";
+import { InsertUser, users, posts, Post, InsertPost, postViews, contactMessages, InsertContactMessage, InsertPostView, CATEGORIES } from "../drizzle/schema.js";
 import { ENV } from './_core/env.js';
 import { z } from "zod";
-const CATEGORIES = ["Política", "Economia", "Investimentos", "Ciência e Tecnologia", "Curiosidade"] as const;
 
 const POST_SELECT_FIELDS = {
   id: posts.id,
@@ -20,6 +19,7 @@ const POST_SELECT_FIELDS = {
   publishedAt: posts.publishedAt,
   createdAt: posts.createdAt,
   updatedAt: posts.updatedAt,
+  authorId: posts.authorId,
 } as const;
 
 const dashboardStatsCache = new Map<string, { data: any, timestamp: number }>();
@@ -417,4 +417,14 @@ export async function incrementPostViews(id: number): Promise<void> {
   } catch (error) {
     console.error(`[Database] Failed to insert into post_views for post ${id}:`, error);
   }
+}
+
+export async function getAllPostsForSitemap() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db
+    .select({ slug: posts.slug, publishedAt: posts.publishedAt, createdAt: posts.createdAt })
+    .from(posts)
+    .where(and(eq(posts.published, true), lte(posts.publishedAt, new Date())))
+    .orderBy(desc(posts.publishedAt));
 }

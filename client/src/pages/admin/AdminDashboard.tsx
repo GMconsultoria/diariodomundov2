@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { trpc } from "@/lib/trpc";
 import { 
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -38,7 +38,8 @@ export default function AdminDashboard() {
     };
   };
 
-  const { data: stats, isLoading, error, refetch, isFetching } = trpc.admin.getStats.useQuery(getFilterParams());
+  const filterParams = useMemo(() => getFilterParams(), [dateRange, customStart, customEnd]);
+  const { data: stats, isLoading, error, refetch, isFetching } = trpc.admin.getStats.useQuery(filterParams);
 
   if (isLoading) {
     return (

@@ -8,9 +8,7 @@ import * as db from "./db.js";
 import { sql } from "drizzle-orm";
 import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
-import axios from "axios";
 const COOKIE_NAME = "app_session_id";
-const ONE_YEAR_MS = 1000 * 60 * 60 * 24 * 365;
 import { getSessionCookieOptions, sdk } from "./_core/sdk.js";
 
 let app: any;
@@ -25,7 +23,17 @@ export default async function handler(req: any, res: any) {
       
       // Minimal Helmet for Vercel
       server.use(helmet({
-        contentSecurityPolicy: false, // Disable CSP temporarily to ensure no blocked scripts
+        contentSecurityPolicy: {
+          directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://*.google.com", "https://*.gstatic.com", "https://pagead2.googlesyndication.com"],
+            imgSrc: ["'self'", "data:", "https:"],
+            connectSrc: ["'self'", "https:"],
+            styleSrc: ["'self'", "'unsafe-inline'"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com"],
+            frameSrc: ["'self'", "https://*.google.com"],
+          },
+        },
         crossOriginEmbedderPolicy: false,
       }));
 
@@ -68,24 +76,32 @@ export default async function handler(req: any, res: any) {
           const origin = ENV.baseUrl || `${protocol}://${req.get("host")}`;
           const redirectUri = `${origin}/api/oauth/callback`;
 
-          const tokenResponse = await axios.post("https://oauth2.googleapis.com/token", {
-            client_id: ENV.googleClientId,
-            client_secret: ENV.googleClientSecret,
-            code,
-            grant_type: "authorization_code",
-            redirect_uri: redirectUri
+          const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              client_id: ENV.googleClientId,
+              client_secret: ENV.googleClientSecret,
+              code,
+              grant_type: "authorization_code",
+              redirect_uri: redirectUri
+            })
           });
+          const tokenData = await tokenRes.json();
+          if (!tokenRes.ok) throw new Error(tokenData.error_description || tokenData.error || "Token exchange failed");
 
-          const userResponse = await axios.get("https://www.googleapis.com/oauth2/v2/userinfo", {
-            headers: { Authorization: `Bearer ${tokenResponse.data.access_token}` }
+          const userResponse = await fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
+            headers: { Authorization: `Bearer ${tokenData.access_token}` }
           });
+          const userResponse_data = await userResponse.json();
+          if (!userResponse.ok) throw new Error("Failed to fetch user info");
 
-          const googleUser = userResponse.data;
+          const googleUser = userResponse_data;
           await db.upsertUser({
             openId: googleUser.id,
             email: googleUser.email,
             name: googleUser.name,
-            role: "user"
+            role: "reader"
           });
 
           const session = await sdk.createSession(googleUser.id);

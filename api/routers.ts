@@ -1,6 +1,5 @@
 const COOKIE_NAME = "app_session_id";
-const ONE_YEAR_MS = 1000 * 60 * 60 * 24 * 365;
-const CATEGORIES = ["Política", "Economia", "Investimentos", "Ciência e Tecnologia", "Curiosidade"] as const;
+import { CATEGORIES } from "../drizzle/schema.js";
 import { getSessionCookieOptions } from "./_core/sdk.js";
 
 import { Resend } from 'resend';
@@ -95,7 +94,7 @@ export const appRouter = router({
     search: publicProcedure
       .input(z.object({ query: z.string().min(2).max(100).trim() }))
       .query(async ({ input }) => {
-        return await searchPosts(input.query.trim());
+        return await searchPosts(input.query);
       }),
   }),
 
@@ -266,17 +265,19 @@ export const appRouter = router({
         await createContactMessage(input);
         
         if (resend) {
+          const escHtml = (s: string) =>
+            s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
           try {
             await resend.emails.send({
               from: "noreply@diariodomundo.com.br",
               to: process.env.ADMIN_EMAIL || "admin@diariodomundo.com.br",
               reply_to: input.email,
-              subject: `Nova mensagem de ${input.name}: ${input.subject}`,
+              subject: `Nova mensagem de ${escHtml(input.name)}: ${escHtml(input.subject)}`,
               html: `
-                <p><strong>De:</strong> ${input.name} (${input.email})</p>
-                <p><strong>Assunto:</strong> ${input.subject}</p>
+                <p><strong>De:</strong> ${escHtml(input.name)} (${escHtml(input.email)})</p>
+                <p><strong>Assunto:</strong> ${escHtml(input.subject)}</p>
                 <hr />
-                <p>${input.message.replace(/\\n/g, '<br>')}</p>
+                <p>${escHtml(input.message).replace(/\n/g, '<br>')}</p>
               `
             });
           } catch (error) {

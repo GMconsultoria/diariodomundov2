@@ -85,22 +85,20 @@ export default function Article() {
         ogImage={post.imageUrl}
         ogType="article"
       />
-      <script type="application/ld+json">
-        {JSON.stringify({
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "NewsArticle",
           "headline": post.title,
           "description": post.subtitle || post.title,
-          "image": [post.imageUrl || "https://diariodomundov2.onrender.com/og-image.png"],
+          "image": [post.imageUrl || "https://diariodomundo.com.br/og-image.png"],
           "datePublished": (post.publishedAt || post.createdAt || new Date()).toISOString(),
           "dateModified": (post.updatedAt || post.createdAt || new Date()).toISOString(),
           "author": [{
             "@type": "Person",
             "name": post.author,
-            "url": "https://diariodomundov2.onrender.com/"
+            "url": "https://diariodomundo.com.br/"
           }]
-        })}
-      </script>
+        }) }} />
       <Header />
 
       <main className="flex-1 bg-background">
@@ -176,6 +174,7 @@ export default function Article() {
                 <img
                   src={post.imageUrl}
                   alt={post.title}
+                  loading="eager"
                   className="w-full h-96 md:h-[500px] object-cover rounded-lg"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=2070";
