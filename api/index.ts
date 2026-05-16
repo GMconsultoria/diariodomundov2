@@ -104,8 +104,8 @@ export default async function handler(req: any, res: any) {
             role: "reader"
           });
 
-          const session = await sdk.createSession(googleUser.id);
-          res.cookie(COOKIE_NAME, session.id, getSessionCookieOptions());
+          const sessionToken = await sdk.createSessionToken(googleUser.id, { name: googleUser.name });
+          res.cookie(COOKIE_NAME, sessionToken, getSessionCookieOptions());
 
           let returnTo = "/";
           try { if (state) returnTo = JSON.parse(state).returnTo || "/"; } catch (e) {}
