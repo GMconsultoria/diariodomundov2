@@ -12,7 +12,8 @@
     "start": "NODE_ENV=production node dist/server.js",
     "check": "tsc --noEmit",
     "format": "prettier --write .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "db-checkup": "tsx db-checkup.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
