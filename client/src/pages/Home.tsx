@@ -46,11 +46,7 @@ export default function Home() {
         {/* Main Content Area with Side Ads - Featured Posts */}
         <div className="flex justify-center">
           {/* Left Ad Space */}
-          <div className="hidden xl:flex w-64 bg-muted items-center justify-center text-muted-foreground text-sm font-semibold sticky top-20 h-96">
-            <div className="text-center">
-              <div className="text-xs uppercase tracking-widest mb-2">Publicidade</div>
-              <div className="text-lg">Espaço 1</div>
-            </div>
+          <div className="hidden xl:flex w-64 bg-muted items-center justify-center sticky top-20 h-96">
           </div>
 
           {/* Center Content */}
@@ -123,22 +119,14 @@ export default function Home() {
           </div>
 
           {/* Right Ad Space */}
-          <div className="hidden xl:flex w-64 bg-muted items-center justify-center text-muted-foreground text-sm font-semibold sticky top-20 h-96">
-            <div className="text-center">
-              <div className="text-xs uppercase tracking-widest mb-2">Publicidade</div>
-              <div className="text-lg">Espaço 2</div>
-            </div>
+          <div className="hidden xl:flex w-64 bg-muted items-center justify-center sticky top-20 h-96">
           </div>
         </div>
 
         {/* Ad Space Between Sections */}
         <section className="flex justify-center py-8 bg-muted border-y border-border">
           <div className="w-full max-w-6xl px-4 flex justify-center">
-            <div className="w-full h-32 bg-white rounded-lg flex items-center justify-center text-muted-foreground font-semibold border border-border">
-              <div className="text-center">
-                <div className="text-xs uppercase tracking-widest mb-2">Publicidade</div>
-                <div className="text-lg">Espaço Central</div>
-              </div>
+            <div className="w-full h-32 bg-muted rounded-lg flex items-center justify-center border border-border">
             </div>
           </div>
         </section>

@@ -105,11 +105,7 @@ export default function Article() {
         {/* Article with Side Ads */}
         <div className="flex justify-center">
           {/* Left Ad Space */}
-          <div className="hidden xl:flex w-64 bg-muted items-center justify-center text-muted-foreground text-sm font-semibold sticky top-20 h-96">
-            <div className="text-center">
-              <div className="text-xs uppercase tracking-widest mb-2">Publicidade</div>
-              <div className="text-lg">Espaço 1</div>
-            </div>
+          <div className="hidden xl:flex w-64 bg-muted items-center justify-center sticky top-20 h-96">
           </div>
 
           {/* Main Article Content */}
@@ -229,11 +225,7 @@ export default function Article() {
 
             {/* Ad Space in Middle of Content */}
             <div className="my-12 flex justify-center">
-              <div className="w-full h-32 bg-muted rounded-lg flex items-center justify-center text-muted-foreground font-semibold border border-border">
-                <div className="text-center">
-                  <div className="text-xs uppercase tracking-widest mb-2">Publicidade</div>
-                  <div className="text-lg">Espaço Central</div>
-                </div>
+              <div className="w-full h-32 bg-muted rounded-lg flex items-center justify-center border border-border">
               </div>
             </div>
 
@@ -251,11 +243,7 @@ export default function Article() {
           </article>
 
           {/* Right Ad Space */}
-          <div className="hidden xl:flex w-64 bg-muted items-center justify-center text-muted-foreground text-sm font-semibold sticky top-20 h-96">
-            <div className="text-center">
-              <div className="text-xs uppercase tracking-widest mb-2">Publicidade</div>
-              <div className="text-lg">Espaço 2</div>
-            </div>
+          <div className="hidden xl:flex w-64 bg-muted items-center justify-center sticky top-20 h-96">
           </div>
         </div>
       </main>
