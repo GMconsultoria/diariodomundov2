@@ -6,6 +6,11 @@ import { CATEGORIES } from "@shared/const";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { toast } from "sonner";
 
+const toLocalISOString = (date: Date) => {
+  const tzOffset = date.getTimezoneOffset() * 60000;
+  return new Date(date.getTime() - tzOffset).toISOString().slice(0, 16);
+};
+
 export default function AdminCreatePost() {
   const [, setLocation] = useLocation();
   const { user } = useAuth();
@@ -19,7 +24,7 @@ export default function AdminCreatePost() {
     imageUrl: "",
     imageKey: "",
     published: true, // Default to true but controlled by date
-    publishedAt: new Date().toISOString().slice(0, 16), // Format for datetime-local: YYYY-MM-DDTHH:mm
+    publishedAt: toLocalISOString(new Date()), // Format for datetime-local: YYYY-MM-DDTHH:mm
   });
 
   const [isScheduled, setIsScheduled] = useState(false);
@@ -137,7 +142,9 @@ export default function AdminCreatePost() {
     // If not scheduled, ensure we use the current exact time
     const finalData = {
       ...formData,
-      publishedAt: isScheduled ? formData.publishedAt : new Date().toISOString()
+      publishedAt: isScheduled 
+        ? new Date(formData.publishedAt).toISOString() 
+        : new Date().toISOString()
     };
     
     await createMutation.mutateAsync(finalData as any);

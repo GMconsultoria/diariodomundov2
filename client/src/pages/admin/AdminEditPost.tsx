@@ -5,6 +5,11 @@ import { Loader2, Upload, CheckCircle2, AlertCircle, Clock, Calendar } from "luc
 import { CATEGORIES } from "@shared/const";
 import { toast } from "sonner";
 
+const toLocalISOString = (date: Date) => {
+  const tzOffset = date.getTimezoneOffset() * 60000;
+  return new Date(date.getTime() - tzOffset).toISOString().slice(0, 16);
+};
+
 export default function AdminEditPost() {
   const [match, params] = useRoute("/posts/:id/edit");
   const [, setLocation] = useLocation();
@@ -19,7 +24,7 @@ export default function AdminEditPost() {
     imageUrl: "",
     imageKey: "",
     published: false,
-    publishedAt: new Date().toISOString().slice(0, 16),
+    publishedAt: toLocalISOString(new Date()),
   });
 
   const [isScheduled, setIsScheduled] = useState(false);
@@ -60,7 +65,7 @@ export default function AdminEditPost() {
         imageUrl: post.imageUrl || "",
         imageKey: post.imageKey || "",
         published: post.published,
-        publishedAt: pubDate.toISOString().slice(0, 16),
+        publishedAt: toLocalISOString(pubDate),
       });
       
       // If the publishedAt is in the future, it's definitely scheduled
@@ -164,11 +169,9 @@ export default function AdminEditPost() {
     e.preventDefault();
     if (!postId) return;
     
-    // If not explicitly scheduled via the UI toggle, we keep the original date 
-    // unless it's a new publication toggle
     const finalData = {
       ...formData,
-      publishedAt: isScheduled ? formData.publishedAt : formData.publishedAt 
+      publishedAt: new Date(formData.publishedAt).toISOString()
     };
 
     await updateMutation.mutateAsync({ id: postId, ...finalData } as any);
