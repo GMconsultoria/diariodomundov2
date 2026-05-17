@@ -19,8 +19,8 @@ export async function storagePut(
   data: Buffer | Uint8Array | string,
   contentType = "application/octet-stream",
 ): Promise<{ key: string; url: string }> {
-  if (!ENV.cloudinaryCloudName) {
-    throw new Error("Cloudinary configuration missing");
+  if (!ENV.cloudinaryCloudName || !ENV.cloudinaryApiKey || !ENV.cloudinaryApiSecret) {
+    throw new Error("Configuração do Cloudinary incompleta na Vercel. Certifique-se de adicionar as variáveis CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY e CLOUDINARY_API_SECRET.");
   }
 
   return new Promise((resolve, reject) => {
