@@ -40,7 +40,7 @@ class SDKServer {
   }
 
   /**
-   * Create a session token for a Manus user openId
+   * Create a session token for a logged-in user openId
    * @example
    * const sessionToken = await sdk.createSessionToken(userInfo.openId);
    */
@@ -120,7 +120,7 @@ class SDKServer {
     const session = await this.verifySession(sessionCookie);
 
     if (!session) {
-      throw ForbiddenError("Invalid session cookie");
+      throw new ForbiddenError("Invalid session cookie");
     }
 
     const sessionUserId = session.openId;
@@ -129,11 +129,11 @@ class SDKServer {
 
     // If user not in DB, sync from OAuth server automatically
     if (!user) {
-      throw ForbiddenError("User not found or not synced");
+      throw new ForbiddenError("User not found or not synced");
     }
 
     if (!user) {
-      throw ForbiddenError("User not found");
+      throw new ForbiddenError("User not found");
     }
 
     await db.upsertUser({

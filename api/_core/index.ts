@@ -26,7 +26,7 @@ export async function createApp() {
   // Performance: Enable Gzip compression
   app.use(compression());
 
-  // Confia no Vercel/Render proxy para capturar o IP real
+  // Confia no proxy da Vercel para capturar o IP real
   app.set("trust proxy", 1);
 
   // Security: Global Hardening with Helmet

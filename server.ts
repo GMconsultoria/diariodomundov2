@@ -1,4 +1,4 @@
-import { createApp } from "./server/_core/index";
+import { createApp } from "./api/_core/index.js";
 import { createServer } from "http";
 
 async function startServer() {
@@ -7,11 +7,11 @@ async function startServer() {
   const server = createServer(app);
 
   if (process.env.NODE_ENV === "development") {
-    const { setupVite } = await import("./server/_core/vite");
+    const { setupVite } = await import("./api/_core/vite.js");
     await setupVite(app, server);
   } else {
     console.log("[Server] Setting up static file serving");
-    const { serveStatic } = await import("./server/_core/vite");
+    const { serveStatic } = await import("./api/_core/vite.js");
     serveStatic(app);
   }
 
