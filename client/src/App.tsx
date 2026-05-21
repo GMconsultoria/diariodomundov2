@@ -14,6 +14,7 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Contact from "./pages/Contact";
 import CookieBanner from "./components/CookieBanner";
+import AdSenseLoader from "./components/AdSenseLoader";
 import { useEffect, Suspense, lazy } from "react";
 import { useLocation } from "wouter";
 import { Loader2 } from "lucide-react";
@@ -62,6 +63,7 @@ function Router() {
       <Route path={"/busca"} component={Search} />
       <Route path="/sobre" component={About} />
       <Route path="/privacidade" component={Privacy} />
+      <Route path="/politica-de-privacidade" component={Privacy} />
       <Route path="/termos" component={Terms} />
       <Route path="/contato" component={Contact} />
       <Route path="/login" component={Login} />
@@ -79,6 +81,7 @@ function App() {
       <ThemeProvider defaultTheme="light">
         <TooltipProvider>
           <AnalyticsTracker />
+          <AdSenseLoader />
           <Toaster />
           <Router />
           <CookieBanner />
@@ -86,8 +89,8 @@ function App() {
               "@context": "https://schema.org",
               "@type": "Organization",
               "name": "Diário do Mundo",
-              "url": "https://diariodomundo.com.br/",
-              "logo": "https://diariodomundo.com.br/favicon.svg"
+              "url": "https://www.diariodomundo.com/",
+              "logo": "https://www.diariodomundo.com/favicon.svg"
             }) }} />
         </TooltipProvider>
       </ThemeProvider>

@@ -93,15 +93,19 @@ export default function Contact() {
 
               <div>
                 <label className="block text-sm font-semibold mb-2">Assunto *</label>
-                <input
-                  type="text"
+                <select
                   name="subject"
                   value={formData.subject}
-                  onChange={handleChange}
+                  onChange={handleChange as any}
                   required
-                  className="w-full px-4 py-2 bg-input text-foreground rounded-lg border border-border focus:outline-none focus:border-accent"
-                  placeholder="Assunto da mensagem"
-                />
+                  className="w-full px-4 py-2 bg-input text-foreground rounded-lg border border-border focus:outline-none focus:border-accent appearance-none"
+                >
+                  <option value="" disabled>Selecione um assunto</option>
+                  <option value="Sugestão de pauta">Sugestão de pauta</option>
+                  <option value="Erro jornalístico">Erro jornalístico</option>
+                  <option value="Publicidade">Publicidade</option>
+                  <option value="Outros">Outros</option>
+                </select>
               </div>
 
               <div>

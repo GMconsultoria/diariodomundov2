@@ -1,4 +1,6 @@
 import { useEffect } from "react";
+import { useLocation } from "wouter";
+import { BASE_URL } from "@/const";
 
 interface SEOProps {
   title?: string | null;
@@ -19,10 +21,18 @@ export default function SEO({
   ogType = "website",
   canonical,
 }: SEOProps) {
+  const [location] = useLocation();
+
   useEffect(() => {
-    // Title
     const baseTitle = "Diário do Mundo | Notícias Independentes";
     document.title = title ? `${title} | Diário do Mundo` : baseTitle;
+
+    // Canonical — always use BASE_URL + current path, never window.location
+    const canonicalUrl = canonical || `${BASE_URL}${location === "/" ? "/" : location}`;
+    let canonicalTag = document.querySelector('link[rel="canonical"]');
+    if (canonicalTag) {
+      canonicalTag.setAttribute("href", canonicalUrl);
+    }
 
     // Meta Description
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -30,29 +40,36 @@ export default function SEO({
       metaDesc.setAttribute("content", description || "Portal de notícias independente com cobertura completa de política, economia, investimentos, ciência e tecnologia.");
     }
 
-    // Canonical
-    let canonicalTag = document.querySelector('link[rel="canonical"]');
-    if (canonicalTag) {
-      canonicalTag.setAttribute("href", canonical || window.location.href);
+    // Open Graph
+    const setOgMeta = (property: string, content: string) => {
+      const tag = document.querySelector(`meta[property="${property}"]`);
+      if (tag) tag.setAttribute("content", content);
+    };
+
+    setOgMeta("og:type", ogType);
+    setOgMeta("og:title", ogTitle || title || baseTitle);
+    setOgMeta("og:description", ogDescription || description || "Informação independente de política e economia em tempo real.");
+    setOgMeta("og:url", canonicalUrl);
+    setOgMeta("og:site_name", "Diário do Mundo");
+
+    if (ogImage) {
+      // If ogImage is a relative path, prefix with BASE_URL
+      const imageUrl = ogImage.startsWith("http") ? ogImage : `${BASE_URL}${ogImage}`;
+      setOgMeta("og:image", imageUrl);
+    } else {
+      setOgMeta("og:image", `${BASE_URL}/og-image.png`);
     }
 
-    // Open Graph
-    const ogTypeTag = document.querySelector('meta[property="og:type"]');
-    if (ogTypeTag) ogTypeTag.setAttribute("content", ogType);
+    // Twitter
+    const setTwitterMeta = (name: string, content: string) => {
+      const tag = document.querySelector(`meta[name="${name}"]`);
+      if (tag) tag.setAttribute("content", content);
+    };
 
-    const ogTitleTag = document.querySelector('meta[property="og:title"]');
-    if (ogTitleTag) ogTitleTag.setAttribute("content", ogTitle || title || baseTitle);
+    setTwitterMeta("twitter:title", ogTitle || title || baseTitle);
+    setTwitterMeta("twitter:description", ogDescription || description || "Informação independente de política e economia em tempo real.");
 
-    const ogDescTag = document.querySelector('meta[property="og:description"]');
-    if (ogDescTag) ogDescTag.setAttribute("content", ogDescription || description || "Informação independente de política e economia em tempo real.");
-
-    const ogImageTag = document.querySelector('meta[property="og:image"]');
-    if (ogImageTag && ogImage) ogImageTag.setAttribute("content", ogImage);
-
-    const ogUrlTag = document.querySelector('meta[property="og:url"]');
-    if (ogUrlTag) ogUrlTag.setAttribute("content", window.location.href);
-
-  }, [title, description, ogTitle, ogDescription, ogImage, ogType, canonical]);
+  }, [title, description, ogTitle, ogDescription, ogImage, ogType, canonical, location]);
 
   return null;
 }

@@ -135,6 +135,18 @@ export async function createApp() {
       // Home
       xml += `  <url><loc>${origin}/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>\n`;
       
+      // Static Pages
+      ['/sobre', '/politica-de-privacidade', '/contato', '/termos'].forEach(page => {
+        xml += `  <url><loc>${origin}${page}</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>\n`;
+      });
+      
+      // Categories
+      const CATEGORIES = ["Política", "Economia", "Investimentos", "Ciência e Tecnologia", "Curiosidade"];
+      CATEGORIES.forEach(category => {
+        const slug = category.toLowerCase().replace(/ /g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        xml += `  <url><loc>${origin}/categoria/${encodeURIComponent(slug)}</loc><changefreq>daily</changefreq><priority>0.7</priority></url>\n`;
+      });
+      
       // Posts
       posts.forEach(post => {
         const date = new Date(post.publishedAt || post.createdAt).toISOString();
@@ -159,7 +171,16 @@ export async function createApp() {
     const protocol = req.headers["x-forwarded-proto"] || req.protocol;
     const origin = ENV.baseUrl || `${protocol}://${req.get('host')}`;
     res.type("text/plain");
-    res.send(`User-agent: *\nAllow: /\nSitemap: ${origin}/sitemap.xml`);
+    res.send(`User-agent: *
+Disallow: /admin/
+Disallow: /api/
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+Sitemap: ${origin}/sitemap.xml
+Host: ${origin.replace(/^https?:\/\//, '')}`);
   });
 
   // Health check

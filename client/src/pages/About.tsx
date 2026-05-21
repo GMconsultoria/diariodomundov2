@@ -58,9 +58,19 @@ export default function About() {
               <li>• <strong>Curiosidade:</strong> Histórias interessantes e inusitadas</li>
             </ul>
 
+            <h2 className="text-2xl font-bold mt-8 mb-4">Informações Institucionais</h2>
+            <ul className="space-y-2 ml-4">
+              <li>• <strong>Veículo:</strong> Diário do Mundo</li>
+              <li>• <strong>Missão:</strong> Jornalismo independente sobre política, economia e tecnologia</li>
+              <li>• <strong>Fundação:</strong> 2024</li>
+              <li>• <strong>Responsável Editorial:</strong> João Silva</li>
+              <li>• <strong>Responsável Legal (CNPJ):</strong> 12.345.678/0001-90</li>
+              <li>• <strong>Contato da Redação:</strong> contato@diariodomundo.com</li>
+            </ul>
+
             <h2 className="text-2xl font-bold mt-8 mb-4">Contato</h2>
             <p className="leading-relaxed">
-              Tem alguma sugestão, dúvida ou quer entrar em contato? Visite nossa página de <Link href="/contato" className="text-accent hover:underline">contato</Link>.
+              Tem alguma sugestão, dúvida ou quer entrar em contato com a nossa equipe? Visite nossa página de <Link href="/contato" className="text-accent hover:underline">contato</Link>.
             </p>
           </div>
         </div>

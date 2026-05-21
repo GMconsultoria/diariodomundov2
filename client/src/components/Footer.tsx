@@ -41,7 +41,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/privacidade" className="no-underline text-gray-300 hover:text-accent transition-colors">
+                <Link href="/politica-de-privacidade" className="no-underline text-gray-300 hover:text-accent transition-colors">
                   Política de Privacidade
                 </Link>
               </li>

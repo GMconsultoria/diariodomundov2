@@ -6,9 +6,24 @@ import NewsCard from "@/components/NewsCard";
 import SEO from "@/components/SEO";
 import { trpc } from "@/lib/trpc";
 import { getCategoryLink } from "@/lib/categoryUtils";
+import { BASE_URL } from "@/const";
 import { Loader2, Facebook, Twitter, MessageCircle } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import DOMPurify from "dompurify";
+
+function estimateReadingTime(html: string): number {
+  const text = html.replace(/<[^>]+>/g, "").trim();
+  const words = text.split(/\s+/).length;
+  return Math.max(1, Math.ceil(words / 200));
+}
+
+function formatDatePtBR(date: Date): string {
+  return date.toLocaleDateString("pt-BR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
 
 export default function Article() {
   const [match, params] = useRoute("/noticias/:slug");
@@ -37,9 +52,16 @@ export default function Article() {
   );
   const related = relatedPostsRaw?.filter(p => p.id !== post?.id).slice(0, 3) ?? [];
 
+  const readingTime = useMemo(() => {
+    if (!post?.content) return 1;
+    return estimateReadingTime(post.content);
+  }, [post?.content]);
 
-  const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const shareUrl = post ? `${BASE_URL}/noticias/${post.slug}` : '';
   const shareText = post?.title || '';
+
+  const publishedDate = post ? new Date(post.publishedAt || post.createdAt) : new Date();
+  const modifiedDate = post ? new Date(post.updatedAt || post.createdAt) : new Date();
 
   if (!match) return null;
 
@@ -90,14 +112,26 @@ export default function Article() {
           "@type": "NewsArticle",
           "headline": post.title,
           "description": post.subtitle || post.title,
-          "image": [post.imageUrl || "https://diariodomundo.com.br/og-image.png"],
-          "datePublished": (post.publishedAt || post.createdAt || new Date()).toISOString(),
-          "dateModified": (post.updatedAt || post.createdAt || new Date()).toISOString(),
+          "image": [post.imageUrl || `${BASE_URL}/og-image.png`],
+          "datePublished": publishedDate.toISOString(),
+          "dateModified": modifiedDate.toISOString(),
           "author": [{
             "@type": "Person",
             "name": post.author,
-            "url": "https://diariodomundo.com.br/"
-          }]
+            "url": `${BASE_URL}/`
+          }],
+          "publisher": {
+            "@type": "Organization",
+            "name": "Diário do Mundo",
+            "logo": {
+              "@type": "ImageObject",
+              "url": `${BASE_URL}/favicon.svg`
+            }
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": `${BASE_URL}/noticias/${post.slug}`
+          }
         }) }} />
       <Header />
 
@@ -144,23 +178,28 @@ export default function Article() {
               </p>
             )}
 
-            {/* Meta Info - Author and Date */}
+            {/* Article Byline — Author, Date, Category, Reading Time */}
             <div className="flex flex-col md:flex-row md:items-center gap-4 text-sm text-muted-foreground border-b border-border pb-8 mb-8">
               <div>
                 <p className="font-semibold text-foreground">Por {post.author}</p>
               </div>
               <div className="hidden md:block">•</div>
               <div>
-                <p>{new Date(post.publishedAt || post.createdAt).toLocaleDateString('pt-BR', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}</p>
+                <time dateTime={publishedDate.toISOString()}>
+                  {formatDatePtBR(publishedDate)}
+                </time>
               </div>
               <div className="hidden md:block">•</div>
               <div>
-                <p>{post.views} visualizações</p>
+                <span>{post.category}</span>
+              </div>
+              <div className="hidden md:block">•</div>
+              <div>
+                <span>{readingTime} min de leitura</span>
+              </div>
+              <div className="hidden md:block">•</div>
+              <div>
+                <span>{post.views} visualizações</span>
               </div>
             </div>
 
