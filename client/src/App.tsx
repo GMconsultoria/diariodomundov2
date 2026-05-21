@@ -28,7 +28,7 @@ function AnalyticsTracker() {
   useEffect(() => {
     // Track GA4
     if (typeof window.gtag === "function") {
-      window.gtag("config", "G-EXGCVYWJZ1", {
+      window.gtag("config", "G-J45K1R1867", {
         page_path: location,
       });
     }
