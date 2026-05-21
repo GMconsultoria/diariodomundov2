@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://www.diariodomundo.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://www.diariodomundo.com/sobre</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.diariodomundo.com/politica-de-privacidade</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.diariodomundo.com/contato</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.diariodomundo.com/termos</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.diariodomundo.com/categoria/politica</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.diariodomundo.com/categoria/economia</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.diariodomundo.com/categoria/investimentos</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.diariodomundo.com/categoria/ciencia-e-tecnologia</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.diariodomundo.com/categoria/curiosidade</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+</urlset>

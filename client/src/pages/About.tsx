@@ -1,81 +1,52 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
-import { Link } from "wouter";
 
 export default function About() {
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="Sobre Nós" description="Conheça a missão, valores e a história do Diário do Mundo, seu portal independente de notícias." />
+      <SEO 
+        title="Sobre Nós" 
+        description="Saiba mais sobre o Diário do Mundo, nossa equipe e nossa missão jornalística."
+      />
       <Header />
-
+      
       <main className="flex-1 bg-background">
         <div className="container max-w-4xl py-12 px-4">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-4 text-foreground">Sobre Nós</h1>
+            <h1 className="text-4xl font-bold mb-4 text-foreground">SOBRE O DIÁRIO DO MUNDO</h1>
             <div className="w-12 h-1 bg-accent rounded"></div>
           </div>
 
-          <div className="space-y-6 text-foreground">
-            <p className="text-lg leading-relaxed">
-              O <strong>Diário do Mundo</strong> é um portal de notícias independente dedicado a trazer informações de qualidade, precisas e atualizadas sobre os principais acontecimentos políticos, econômicos, tecnológicos e culturais do Brasil e do mundo.
+          <div className="space-y-6 text-foreground text-base leading-relaxed">
+            <p>
+              O Diário do Mundo é um portal de notícias independente com cobertura de política, economia, investimentos, ciência e tecnologia. Nosso compromisso é com a informação verificada, a análise aprofundada e a independência editorial.
             </p>
 
-            <h2 className="text-2xl font-bold mt-8 mb-4">Nossa Missão</h2>
-            <p className="leading-relaxed">
-              Fornecer jornalismo de excelência, comprometido com a verdade, a imparcialidade e o interesse público. Acreditamos que a informação de qualidade é fundamental para uma sociedade democrática e bem-informada.
+            <h2 className="text-2xl font-bold mt-8 mb-4">MISSÃO</h2>
+            <p>
+              Oferecer jornalismo de qualidade, acessível e independente, contribuindo para uma sociedade mais informada e crítica.
             </p>
 
-            <h2 className="text-2xl font-bold mt-8 mb-4">Nossos Valores</h2>
-            <ul className="space-y-3">
-              <li className="flex gap-3">
-                <span className="text-accent font-bold">•</span>
-                <span><strong>Integridade:</strong> Comprometimento com a verdade e a ética jornalística</span>
-              </li>
-              <li className="flex gap-3">
-                <span className="text-accent font-bold">•</span>
-                <span><strong>Independência:</strong> Cobertura imparcial e livre de influências políticas</span>
-              </li>
-              <li className="flex gap-3">
-                <span className="text-accent font-bold">•</span>
-                <span><strong>Qualidade:</strong> Conteúdo bem pesquisado e verificado</span>
-              </li>
-              <li className="flex gap-3">
-                <span className="text-accent font-bold">•</span>
-                <span><strong>Acessibilidade:</strong> Informação disponível e compreensível para todos</span>
-              </li>
-            </ul>
-
-            <h2 className="text-2xl font-bold mt-8 mb-4">Categorias de Cobertura</h2>
-            <p className="leading-relaxed">
-              Cobrimos as principais áreas de interesse público:
+            <h2 className="text-2xl font-bold mt-8 mb-4">EQUIPE</h2>
+            <p>
+              João Silva — Editor-chefe
             </p>
-            <ul className="space-y-2 ml-4">
-              <li>• <strong>Política:</strong> Notícias sobre política nacional e internacional</li>
-              <li>• <strong>Economia:</strong> Análises econômicas e de mercado</li>
-              <li>• <strong>Investimentos:</strong> Oportunidades e tendências de investimento</li>
-              <li>• <strong>Ciência e Tecnologia:</strong> Inovações e descobertas científicas</li>
-              <li>• <strong>Curiosidade:</strong> Histórias interessantes e inusitadas</li>
-            </ul>
 
-            <h2 className="text-2xl font-bold mt-8 mb-4">Informações Institucionais</h2>
-            <ul className="space-y-2 ml-4">
-              <li>• <strong>Veículo:</strong> Diário do Mundo</li>
-              <li>• <strong>Missão:</strong> Jornalismo independente sobre política, economia e tecnologia</li>
-              <li>• <strong>Fundação:</strong> 2024</li>
-              <li>• <strong>Responsável Editorial:</strong> João Silva</li>
-              <li>• <strong>Responsável Legal (CNPJ):</strong> 12.345.678/0001-90</li>
-              <li>• <strong>Contato da Redação:</strong> contato@diariodomundo.com</li>
-            </ul>
+            <h2 className="text-2xl font-bold mt-8 mb-4">CONTATO DA REDAÇÃO</h2>
+            <p>
+              E-mail: contato@diariodomundo.com
+            </p>
 
-            <h2 className="text-2xl font-bold mt-8 mb-4">Contato</h2>
-            <p className="leading-relaxed">
-              Tem alguma sugestão, dúvida ou quer entrar em contato com a nossa equipe? Visite nossa página de <Link href="/contato" className="text-accent hover:underline">contato</Link>.
+            <h2 className="text-2xl font-bold mt-8 mb-4">INFORMAÇÕES LEGAIS</h2>
+            <p>
+              CNPJ: 12.345.678/0001-90<br />
+              São Paulo / SP
             </p>
           </div>
         </div>
       </main>
-
+      
       <Footer />
     </div>
   );

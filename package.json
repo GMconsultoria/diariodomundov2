@@ -16,6 +16,7 @@
     "db-checkup": "tsx db-checkup.ts"
   },
   "dependencies": {
+    "@builder.io/vite-plugin-jsx-loc": "^0.1.1",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-slot": "^1.2.3",
@@ -29,12 +30,13 @@
     "@vitejs/plugin-react": "^5.0.4",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
     "cloudinary": "^2.5.1",
+    "clsx": "^2.1.1",
     "compression": "^1.8.1",
     "cookie": "^1.0.2",
     "dompurify": "^3.4.0",
     "dotenv": "^17.2.2",
+    "drizzle-kit": "^0.31.4",
     "drizzle-orm": "^0.44.5",
     "esbuild": "^0.25.0",
     "express": "^4.21.2",
@@ -42,10 +44,10 @@
     "helmet": "^8.1.0",
     "jose": "6.1.0",
     "lucide-react": "^0.453.0",
-    "postgres": "^3.4.5",
     "nanoid": "^5.1.5",
     "next-themes": "^0.4.6",
     "postcss": "^8.4.47",
+    "postgres": "^3.4.5",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "recharts": "^2.15.2",
@@ -60,9 +62,7 @@
     "typescript": "5.9.3",
     "vite": "^7.1.7",
     "wouter": "^3.3.5",
-    "zod": "^4.1.12",
-    "@builder.io/vite-plugin-jsx-loc": "^0.1.1",
-    "drizzle-kit": "^0.31.4"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@types/compression": "^1.8.1",
@@ -71,6 +71,7 @@
     "@types/node": "^24.7.0",
     "@types/react": "^19.2.1",
     "@types/react-dom": "^19.2.1",
+    "jimp": "0.22.12",
     "prettier": "^3.6.2",
     "vitest": "^2.1.4"
   },

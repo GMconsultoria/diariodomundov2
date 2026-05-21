@@ -5,89 +5,58 @@ import SEO from "@/components/SEO";
 export default function Privacy() {
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="Política de Privacidade" />
+      <SEO 
+        title="Política de Privacidade" 
+        description="Nossa política de privacidade e informações sobre como tratamos seus dados pessoais e navegação."
+      />
       <Header />
-
+      
       <main className="flex-1 bg-background">
         <div className="container max-w-4xl py-12 px-4">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-4 text-foreground">Política de Privacidade</h1>
+            <h1 className="text-4xl font-bold mb-4 text-foreground">POLÍTICA DE PRIVACIDADE — DIÁRIO DO MUNDO</h1>
             <p className="text-sm text-muted-foreground mt-2">Última atualização: 20 de maio de 2026</p>
             <div className="w-12 h-1 bg-accent rounded mt-4"></div>
           </div>
 
           <div className="space-y-6 text-foreground text-sm leading-relaxed">
             <section>
-              <h2 className="text-2xl font-bold mt-8 mb-4">1. Introdução e Base Legal</h2>
+              <h2 className="text-xl font-bold mt-8 mb-4">1. SOBRE ESTE SITE</h2>
               <p>
-                O Diário do Mundo coleta dados de navegação como endereço IP, tipo de navegador, páginas visitadas e tempo de permanência, por meio de cookies e tecnologias similares, em conformidade com a <strong>Lei Geral de Proteção de Dados (Lei nº 13.709/2018 - LGPD)</strong>.
+                O Diário do Mundo é um portal de notícias independente dedicado à cobertura de política, economia, investimentos e tecnologia.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mt-8 mb-4">2. Dados Coletados</h2>
+              <h2 className="text-xl font-bold mt-8 mb-4">2. COLETA DE DADOS</h2>
               <p>
-                Coletamos apenas o mínimo necessário para operar o portal:
-              </p>
-              <ul className="ml-4 space-y-2 mt-2">
-                <li>• <strong>Dados de Login:</strong> Nome e e-mail via Google OAuth para identificar sua conta.</li>
-                <li>• <strong>Dados de Contato:</strong> Nome, e-mail e conteúdo da mensagem enviados via formulário.</li>
-                <li>• <strong>Dados de Acesso:</strong> Endereço IP (mascarado), tipo de dispositivo e páginas visitadas para fins estatísticos e segurança.</li>
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-bold mt-8 mb-4">3. Finalidade do Tratamento</h2>
-              <p>
-                Os dados são usados para:
-              </p>
-              <ul className="ml-4 space-y-2 mt-2">
-                <li>• (a) Análise de audiência;</li>
-                <li>• (b) Personalização de publicidade por terceiros (Google AdSense);</li>
-                <li>• (c) Melhoria da experiência do usuário;</li>
-                <li>• (d) Gerenciar seu acesso ao portal e responder a solicitações via formulário.</li>
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-bold mt-8 mb-4">4. Seus Direitos (Art. 18 da LGPD)</h2>
-              <p>
-                Você tem direito a:
-              </p>
-              <ul className="ml-4 space-y-2 mt-2">
-                <li>• Acessar seus dados.</li>
-                <li>• Corrigir dados incorretos ou incompletos.</li>
-                <li>• <strong>Solicitar exclusão:</strong> Você pode excluir sua conta e dados a qualquer momento.</li>
-                <li>• Solicitar portabilidade.</li>
-                <li>• Revogar consentimento para cookies e publicidade.</li>
-              </ul>
-              <p className="mt-4">Para exercer esses direitos, entre em contato através da nossa <a href="/contato" className="text-accent hover:underline">página de contato</a>.</p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-bold mt-8 mb-4">5. Compartilhamento e Segurança</h2>
-              <p>
-                Não compartilhamos seus dados com terceiros para fins comerciais. Os dados são armazenados em servidores seguros com criptografia e protocolos de proteção rigorosos.
+                Coletamos dados de navegação como endereço IP, tipo de navegador, páginas visitadas e duração da sessão por meio de cookies e tecnologias similares. Esses dados são usados exclusivamente para análise de audiência e melhoria da experiência do usuário.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mt-8 mb-4">6. Cookies e Publicidade</h2>
+              <h2 className="text-xl font-bold mt-8 mb-4">3. COOKIES E PUBLICIDADE — GOOGLE ADSENSE</h2>
               <p>
-                Este site utiliza o <strong>Google AdSense</strong> para exibição de anúncios. O Google, como fornecedor terceirizado, usa cookies para exibir anúncios com base nas visitas anteriores do usuário a este e a outros sites. O uso do cookie DART pelo Google permite que ele exiba anúncios para os visitantes com base na visita que fizeram a este site e/ou a outros sites na Internet.
+                Este site utiliza o Google AdSense para exibição de anúncios. O Google, como fornecedor terceirizado, utiliza cookies (incluindo o cookie DART) para exibir anúncios personalizados com base nas visitas anteriores do usuário a este e a outros sites na internet.
               </p>
               <p className="mt-4">
-                Os usuários podem desativar o uso do cookie DART acessando a Política de privacidade da rede de conteúdo e dos anúncios do Google em: <br />
+                Você pode desativar o uso do cookie DART acessando: <br />
                 <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline break-all">
                   https://policies.google.com/technologies/ads
+                </a>
+              </p>
+              <p className="mt-4">
+                Para mais informações sobre como o Google usa dados de parceiros, acesse: <br />
+                <a href="https://policies.google.com/privacy/partners" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline break-all">
+                  https://policies.google.com/privacy/partners
                 </a>
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mt-8 mb-4">7. Ferramentas Analíticas e Terceiros</h2>
+              <h2 className="text-xl font-bold mt-8 mb-4">4. GOOGLE ANALYTICS</h2>
               <p>
-                Além do Google AdSense, este site pode utilizar ferramentas analíticas como Google Analytics para entender o tráfego do site. As políticas de privacidade dessas ferramentas podem ser acessadas em: <br />
+                Utilizamos o Google Analytics (GA4) para medir o desempenho do site. Os dados coletados são anonimizados. Saiba mais em: <br />
                 <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline break-all">
                   https://policies.google.com/privacy
                 </a>
@@ -95,15 +64,36 @@ export default function Privacy() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold mt-8 mb-4">8. Contato</h2>
+              <h2 className="text-xl font-bold mt-8 mb-4">5. SEUS DIREITOS — LGPD (Lei nº 13.709/2018)</h2>
               <p>
-                Para dúvidas sobre esta política, solicitações relacionadas aos seus dados ou exercício de direitos da LGPD, entre em contato através de nossa página de <a href="/contato" className="text-accent hover:underline">Contato</a>.
+                Você tem direito a: acessar seus dados pessoais, corrigir dados incorretos, solicitar exclusão, revogar consentimento e solicitar portabilidade dos dados. Para exercer esses direitos, entre em contato pelo e-mail: contato@diariodomundo.com
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-xl font-bold mt-8 mb-4">6. RETENÇÃO DE DADOS</h2>
+              <p>
+                Os dados de navegação são retidos por até 26 meses, conforme configuração padrão do Google Analytics, após o que são automaticamente excluídos.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-xl font-bold mt-8 mb-4">7. ALTERAÇÕES NESTA POLÍTICA</h2>
+              <p>
+                Podemos atualizar esta política periodicamente. A data de "última atualização" no topo desta página sempre refletirá a versão mais recente.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-xl font-bold mt-8 mb-4">8. CONTATO</h2>
+              <p>
+                Para dúvidas sobre privacidade: contato@diariodomundo.com
               </p>
             </section>
           </div>
         </div>
       </main>
-
+      
       <Footer />
     </div>
   );
