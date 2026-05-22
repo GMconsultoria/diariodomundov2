@@ -42,10 +42,12 @@
     "express": "^4.21.2",
     "express-rate-limit": "^8.4.1",
     "helmet": "^8.1.0",
+    "jimp": "0.22.12",
     "jose": "6.1.0",
     "lucide-react": "^0.453.0",
     "nanoid": "^5.1.5",
     "next-themes": "^0.4.6",
+    "path-to-regexp": "^8.4.2",
     "postcss": "^8.4.47",
     "postgres": "^3.4.5",
     "react": "^19.2.1",
@@ -62,8 +64,7 @@
     "typescript": "5.9.3",
     "vite": "^7.1.7",
     "wouter": "^3.3.5",
-    "zod": "^4.1.12",
-    "jimp": "0.22.12"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@types/compression": "^1.8.1",
