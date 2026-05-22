@@ -48,7 +48,7 @@ export default function SEO({
 
     setOgMeta("og:type", ogType);
     setOgMeta("og:title", ogTitle || title || baseTitle);
-    setOgMeta("og:description", ogDescription || description || "Informação independente de política e economia em tempo real.");
+    setOgMeta("og:description", ogDescription || description || "Portal de notícias independente com cobertura completa de política, economia, investimentos, ciência e tecnologia.");
     setOgMeta("og:url", canonicalUrl);
     setOgMeta("og:site_name", "Diário do Mundo");
 
@@ -67,7 +67,7 @@ export default function SEO({
     };
 
     setTwitterMeta("twitter:title", ogTitle || title || baseTitle);
-    setTwitterMeta("twitter:description", ogDescription || description || "Informação independente de política e economia em tempo real.");
+    setTwitterMeta("twitter:description", ogDescription || description || "Portal de notícias independente com cobertura completa de política, economia, investimentos, ciência e tecnologia.");
 
   }, [title, description, ogTitle, ogDescription, ogImage, ogType, canonical, location]);
 
