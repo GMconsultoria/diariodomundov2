@@ -197,10 +197,6 @@ export default function Article() {
               <div>
                 <span>{readingTime} min de leitura</span>
               </div>
-              <div className="hidden md:block">•</div>
-              <div>
-                <span>{post.views} visualizações</span>
-              </div>
             </div>
 
             {/* Featured Image */}
