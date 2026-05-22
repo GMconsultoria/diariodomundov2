@@ -76,6 +76,16 @@ function Router() {
 }
 
 function App() {
+  useEffect(() => {
+    // Remove the SSR scaffold injected by ssr-renderer.ts once React has hydrated.
+    // Googlebot already read this node from the initial HTML response; real users
+    // never see it because React removes it synchronously on first paint.
+    const ssrNode = document.getElementById('ssr-content');
+    if (ssrNode) {
+      ssrNode.remove();
+    }
+  }, []);
+
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light">

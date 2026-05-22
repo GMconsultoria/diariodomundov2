@@ -98,14 +98,20 @@ export async function renderPageToString(ctx: SSRContext): Promise<string> {
       // Add right before </head>
       html = html.replace('</head>', `  ${schemaScript}\n  </head>`);
       
-      // We will also inject the article content to ensure google indexes it immediately
-      // This is crucial for AdSense "Low value content" error.
+      // Inject article content for crawler indexing (AdSense "Low value content" fix).
+      // Uses accessible off-screen technique: position:absolute + left:-9999px is NOT display:none,
+      // so Googlebot indexes the content. React removes this node after hydration via useEffect in App.tsx,
+      // preventing any visual flash or duplicate content for real users.
       const articleContent = `
-        <div style="display:none;" id="ssr-content">
+        <div
+          id="ssr-content"
+          aria-hidden="true"
+          style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;"
+        >
             <h1>${post.title}</h1>
             <h2>${post.subtitle || ''}</h2>
-            <div>Por ${post.author} em ${new Date(publishedDate).toLocaleDateString("pt-BR")}</div>
-            <article>${post.content}</article>
+            <p>Por ${post.author} em ${new Date(publishedDate).toLocaleDateString("pt-BR")}</p>
+            <article class="article-content">${post.content}</article>
         </div>
       `;
       html = html.replace('<div id="root"></div>', `<div id="root"></div>\n    ${articleContent}`);
