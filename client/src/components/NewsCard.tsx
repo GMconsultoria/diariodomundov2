@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Link } from "wouter";
+import Link from "next/link";
 import { getCategoryLink } from "@/lib/categoryUtils";
 import type { Post } from "@shared/types";
 

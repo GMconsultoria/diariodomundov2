@@ -1,5 +1,7 @@
+"use client";
 import { useState } from "react";
-import { Link, useLocation } from "wouter";
+import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import { getCategoryLink } from "@/lib/categoryUtils";
 import { Search, ChevronDown, LogOut, UserX } from "lucide-react";
 import { toast } from "sonner";
@@ -10,27 +12,25 @@ import { CATEGORIES } from "@shared/const";
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState("");
   const { user, isAuthenticated, logout } = useAuth();
-  const loginUrl = "/login";
-  const handleLogin = () => {
-    setLocation(loginUrl);
-  };
-  
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const [, setLocation] = useLocation();
+  const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      setLocation(`/busca?q=${encodeURIComponent(searchQuery)}`);
+      router.push(`/busca?q=${encodeURIComponent(searchQuery)}`);
     }
   };
-  
+
+  const handleLogin = () => {
+    router.push("/login");
+  };
+
   const deleteMeMutation = trpc.auth.deleteMe.useMutation({
     onSuccess: () => {
       toast.success("Sua conta foi excluída com sucesso.");
       logout();
-      setLocation("/");
+      router.push("/");
     },
     onError: (err) => {
       toast.error("Erro ao excluir conta: " + err.message);
@@ -57,17 +57,15 @@ export default function Header() {
 
           {/* Desktop Navigation - Categories */}
           <nav className="hidden lg:flex items-center gap-8 flex-1">
-            {CATEGORIES.map((category) => {
-              return (
-                <Link
-                  key={category}
-                  href={getCategoryLink(category)}
-                  className="no-underline text-white font-semibold text-sm hover:text-red-600 transition-colors whitespace-nowrap"
-                >
-                  {category}
-                </Link>
-              );
-            })}
+            {CATEGORIES.map((category) => (
+              <Link
+                key={category}
+                href={getCategoryLink(category)}
+                className="no-underline text-white font-semibold text-sm hover:text-red-600 transition-colors whitespace-nowrap"
+              >
+                {category}
+              </Link>
+            ))}
           </nav>
 
           {/* Search Bar */}
@@ -91,15 +89,15 @@ export default function Header() {
           {/* Auth Buttons - Desktop */}
           <div className="hidden md:flex items-center gap-3 flex-shrink-0">
             {isAuthenticated ? (
-              <div 
-                className="relative" 
+              <div
+                className="relative"
                 onMouseEnter={() => setIsDropdownOpen(true)}
                 onMouseLeave={() => setIsDropdownOpen(false)}
               >
                 <button className="flex items-center gap-2 text-sm text-white font-semibold hover:text-red-400 transition-colors">
                   Minha Conta <ChevronDown size={16} />
                 </button>
-                
+
                 {isDropdownOpen && (
                   <div className="absolute right-0 top-full pt-2 w-56 z-50">
                     <div className="bg-gray-800 rounded-lg shadow-xl py-2 border border-gray-700">
@@ -107,7 +105,7 @@ export default function Header() {
                         <p className="text-xs text-gray-400">Logado como:</p>
                         <p className="text-sm text-white font-semibold truncate">{user?.name}</p>
                       </div>
-                      
+
                       {user?.role === "admin" && (
                         <Link href="/admin/" className="no-underline block px-4 py-2 text-sm text-white hover:bg-gray-700 transition-colors">
                           Acessar Painel Admin
@@ -128,8 +126,8 @@ export default function Header() {
                           <UserX size={16} /> Excluir Conta
                         </button>
                       )}
-                      
-                      <button 
+
+                      <button
                         onClick={() => logout()}
                         className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-700 transition-colors flex items-center gap-2 cursor-pointer"
                       >
@@ -140,7 +138,7 @@ export default function Header() {
                 )}
               </div>
             ) : (
-              <button 
+              <button
                 onClick={handleLogin}
                 className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm font-semibold"
               >
@@ -152,14 +150,14 @@ export default function Header() {
           {/* Mobile Auth Button (Top Right) */}
           <div className="md:hidden">
             {isAuthenticated ? (
-              <button 
-                onClick={() => setLocation("/admin/")}
+              <button
+                onClick={() => router.push("/admin/")}
                 className="px-3 py-1.5 bg-gray-800 text-white rounded text-xs font-semibold border border-gray-700"
               >
                 Painel
               </button>
             ) : (
-              <button 
+              <button
                 onClick={handleLogin}
                 className="px-3 py-1.5 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-xs font-semibold"
               >
@@ -192,21 +190,17 @@ export default function Header() {
         {/* Mobile Categories */}
         <nav className="lg:hidden mt-3 px-4 overflow-x-auto">
           <div className="flex gap-4 pb-2">
-            {CATEGORIES.map((category) => {
-              return (
-                <Link
-                  key={category}
-                  href={getCategoryLink(category)}
-                  className="no-underline text-white font-semibold text-xs hover:text-red-600 transition-colors whitespace-nowrap"
-                >
-                  {category}
-                </Link>
-              );
-            })}
+            {CATEGORIES.map((category) => (
+              <Link
+                key={category}
+                href={getCategoryLink(category)}
+                className="no-underline text-white font-semibold text-xs hover:text-red-600 transition-colors whitespace-nowrap"
+              >
+                {category}
+              </Link>
+            ))}
           </div>
         </nav>
-
-
       </div>
     </header>
   );

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
-import { Link } from "wouter";
+import Link from "next/link";
 
 const CONSENT_KEY = "cookie_consent";
 const CONSENT_DURATION_DAYS = 180;

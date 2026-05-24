@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+import Link from "next/link";
 import { CATEGORIES } from "@shared/const";
 import { getCategoryLink } from "@/lib/categoryUtils";
 
