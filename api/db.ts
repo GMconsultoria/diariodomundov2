@@ -32,7 +32,17 @@ let _db: ReturnType<typeof drizzle> | null = null;
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
-      const client = postgres(process.env.DATABASE_URL);
+      const client = postgres(process.env.DATABASE_URL, {
+        // Required for Supabase Transaction Pooler (PgBouncer) on port 6543
+        prepare: false,
+        // SSL is required for Supabase connections
+        ssl: "require",
+        // Limit connections in serverless environment
+        max: 1,
+        // Timeout to avoid hanging serverless functions
+        connect_timeout: 10,
+        idle_timeout: 20,
+      });
       _db = drizzle(client);
       console.log("[Database] PostgreSQL connection established");
     } catch (error) {
