@@ -5,7 +5,7 @@ export const ENV = {
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
   ownerOpenId: process.env.OWNER_OPEN_ID ?? "",
   isProduction: process.env.NODE_ENV === "production",
-  baseUrl: process.env.BASE_URL?.replace(/\/+$/, "") ?? "https://www.diariodomundo.com",
+  baseUrl: process.env.BASE_URL?.replace(/\/+$/, "") || (process.env.NODE_ENV === "production" ? "https://www.diariodomundo.com" : ""),
   contactEmail: process.env.CONTACT_EMAIL ?? "contato@diariodomundo.com",
   forgeApiUrl: process.env.BUILT_IN_FORGE_API_URL ?? "",
   forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
