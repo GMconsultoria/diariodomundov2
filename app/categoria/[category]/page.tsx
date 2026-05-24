@@ -50,7 +50,12 @@ export default async function CategoryPage({ params }: Props) {
 
   if (!category) notFound();
 
-  const posts = await getPostsByCategory(category, 50, 0);
+  let posts: Awaited<ReturnType<typeof getPostsByCategory>> = [];
+  try {
+    posts = await getPostsByCategory(category, 50, 0);
+  } catch (err) {
+    console.error("[CategoryPage] Failed to load posts:", err);
+  }
 
   return (
     <div className="min-h-screen flex flex-col">

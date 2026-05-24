@@ -19,7 +19,12 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const posts = await getAllPublishedPosts(30, 0);
+  let posts: Awaited<ReturnType<typeof getAllPublishedPosts>> = [];
+  try {
+    posts = await getAllPublishedPosts(30, 0);
+  } catch (err) {
+    console.error("[HomePage] Failed to load posts:", err);
+  }
   const featuredPost = posts[0] ?? null;
 
   const categoryPosts: Record<string, typeof posts> = {};

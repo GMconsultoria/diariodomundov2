@@ -14,7 +14,8 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  let post = null;
+  try { post = await getPostBySlug(slug); } catch {}
 
   if (!post) {
     return { title: "Artigo não encontrado" };
@@ -50,7 +51,8 @@ export const dynamic = "force-dynamic";
 
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  let post = null;
+  try { post = await getPostBySlug(slug); } catch {}
 
   if (!post || !post.published) {
     notFound();
