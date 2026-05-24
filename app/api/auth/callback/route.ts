@@ -7,7 +7,7 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const code = url.searchParams.get("code") ?? "";
   const state = url.searchParams.get("state") ?? "";
-  const origin = ENV.baseUrl || url.origin;
+  const origin = process.env.NODE_ENV === "development" ? url.origin : (ENV.baseUrl || url.origin);
   const redirectUri = `${origin}/api/auth/callback`;
 
   try {

@@ -9,7 +9,7 @@ export function GET(req: Request) {
     return NextResponse.json({ error: "Login configuration error" }, { status: 500 });
   }
 
-  const origin = ENV.baseUrl || url.origin;
+  const origin = process.env.NODE_ENV === "development" ? url.origin : (ENV.baseUrl || url.origin);
   const redirectUri = `${origin}/api/auth/callback`;
 
   const authUrl = new URL("https://accounts.google.com/o/oauth2/v2/auth");
