@@ -8,16 +8,22 @@
       content="width=device-width, initial-scale=1.0" />
     <title>Diário do Mundo | Notícias Independentes</title>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J45K1R1867"></script>
+    <!-- Google Consent Mode v2 -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-J45K1R1867', {
-        page_path: window.location.pathname,
+      gtag('consent', 'default', {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        wait_for_update: 500
       });
+    </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J45K1R1867"></script>
+    <script>
+      gtag('js', new Date());
     </script>
     <meta name="description" content="Portal de notícias independente com cobertura completa de política, economia, investimentos, ciência e tecnologia." />
     <meta name="keywords" content="notícias, política, economia, brasil, investimentos, tecnologia" />

@@ -12,6 +12,17 @@ export default function AdSenseLoader() {
     const consent = localStorage.getItem("cookie_consent");
     if (consent !== "accepted" || loaded) return;
 
+    // GA4 Consent Update
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+      window.gtag("consent", "update", {
+        analytics_storage: "granted",
+        ad_storage: "granted",
+        ad_user_data: "granted",
+        ad_personalization: "granted"
+      });
+      window.gtag("config", "G-J45K1R1867", { page_path: window.location.pathname });
+    }
+
     // Check if script is already loaded
     const existing = document.querySelector(
       `script[src*="adsbygoogle.js"]`

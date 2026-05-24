@@ -5,7 +5,10 @@ import SEO from "@/components/SEO";
 export default function Terms() {
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="Termos de Uso" />
+      <SEO 
+        title="Termos de Uso" 
+        description="Leia os termos de uso do Diário do Mundo. Saiba seus direitos e deveres ao acessar nosso portal de notícias."
+      />
       <Header />
 
       <main className="flex-1 bg-background">

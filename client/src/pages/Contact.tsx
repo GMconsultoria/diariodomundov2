@@ -43,7 +43,10 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEO title="Contato" />
+      <SEO 
+        title="Contato" 
+        description="Entre em contato com a redação do Diário do Mundo. Envie sugestões de pauta, denúncias ou tire dúvidas sobre nosso portal de notícias."
+      />
       <Header />
 
       <main className="flex-1 bg-background">

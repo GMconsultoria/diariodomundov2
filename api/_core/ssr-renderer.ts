@@ -93,28 +93,33 @@ export async function renderPageToString(ctx: SSRContext): Promise<string> {
           `<meta property="og:type" content="article" />`
       );
       
+      // Inject Twitter tags
+      html = html.replace(
+          /<meta name="twitter:title" content="(.*?)" \/>/,
+          `<meta name="twitter:title" content="${title.replace(/"/g, '&quot;')}" />`
+      );
+      html = html.replace(
+          /<meta name="twitter:description" content="(.*?)" \/>/,
+          `<meta name="twitter:description" content="${description.replace(/"/g, '&quot;')}" />\n    <meta name="twitter:image" content="${imageUrl}" />`
+      );
+      
       // Inject Schema.org
       const schemaScript = `<script type="application/ld+json">${schemaOrg}</script>`;
       // Add right before </head>
       html = html.replace('</head>', `  ${schemaScript}\n  </head>`);
       
       // Inject article content for crawler indexing (AdSense "Low value content" fix).
-      // Uses accessible off-screen technique: position:absolute + left:-9999px is NOT display:none,
-      // so Googlebot indexes the content. React removes this node after hydration via useEffect in App.tsx,
-      // preventing any visual flash or duplicate content for real users.
+      // Injecting inside #root so it is part of the visible DOM initially.
+      // React removes this node after hydration via useEffect in App.tsx.
       const articleContent = `
-        <div
-          id="ssr-content"
-          aria-hidden="true"
-          style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;"
-        >
+        <div id="ssr-content">
             <h1>${post.title}</h1>
             <h2>${post.subtitle || ''}</h2>
             <p>Por ${post.author} em ${new Date(publishedDate).toLocaleDateString("pt-BR")}</p>
             <article class="article-content">${post.content}</article>
         </div>
       `;
-      html = html.replace('<div id="root"></div>', `<div id="root"></div>\n    ${articleContent}`);
+      html = html.replace('<div id="root"></div>', `<div id="root">\n${articleContent}\n    </div>`);
 
   } else if (dbData && dbData.page) {
     const { title, description } = dbData.page;
@@ -141,6 +146,14 @@ export async function renderPageToString(ctx: SSRContext): Promise<string> {
     html = html.replace(
         /<meta property="og:url" content="(.*?)" \/>/,
         `<meta property="og:url" content="${canonical}" />`
+    );
+  } else {
+    // Universal Canonical Fallback for routes without specific dbData
+    const pathname = url.split('?')[0];
+    const fallbackCanonical = `https://www.diariodomundo.com${pathname === '/' ? '/' : pathname}`;
+    html = html.replace(
+        /<link rel="canonical" href="(.*?)" \/>/, 
+        `<link rel="canonical" href="${fallbackCanonical}" />`
     );
   }
 
