@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { ADSENSE_ID } from "@/const";
 
+declare global {
+  interface Window {
+    gtag: any;
+  }
+}
+
 /**
  * Loads the Google AdSense script ONLY after the user has accepted cookies.
  * This ensures LGPD compliance — no marketing scripts run before consent.

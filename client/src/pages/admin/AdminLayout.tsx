@@ -14,8 +14,7 @@ export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [, setLocation] = useLocation();
 
-  const API_BASE_URL = import.meta.env.VITE_API_URL || "";
-  const loginUrl = `${API_BASE_URL}/api/auth/login?returnTo=/admin`;
+  const loginUrl = `/api/auth/login?returnTo=/admin`;
 
   if (loading) {
     return (

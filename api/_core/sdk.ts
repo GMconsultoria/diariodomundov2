@@ -7,7 +7,6 @@ class ForbiddenError extends Error {
   }
 }
 import { parse as parseCookieHeader } from "cookie";
-import type { Request } from "express";
 import { SignJWT, jwtVerify } from "jose";
 import type { User } from "../../drizzle/schema.js";
 import * as db from "../db.js";
@@ -113,7 +112,7 @@ class SDKServer {
   }
 
 
-  async authenticateRequest(req: Request): Promise<User> {
+  async authenticateRequest(req: any): Promise<User> {
     // Regular authentication flow
     const cookies = this.parseCookies(req.headers.cookie);
     const sessionCookie = cookies.get(COOKIE_NAME);
@@ -147,7 +146,7 @@ class SDKServer {
 
 export const sdk = new SDKServer();
 
-export function getSessionCookieOptions(req?: Request) {
+export function getSessionCookieOptions(req?: any) {
   return {
     httpOnly: true,
     secure: ENV.isProduction,
