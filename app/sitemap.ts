@@ -25,7 +25,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // Article routes (max 10,000 for sitemap performance, usually paginated in huge sites)
-  const posts = await getAllPublishedPosts(1000, 0);
+  let posts: Awaited<ReturnType<typeof getAllPublishedPosts>> = [];
+  try {
+    posts = await getAllPublishedPosts(1000, 0);
+  } catch (err) {
+    console.error("[Sitemap] DB unavailable, skipping post routes:", err);
+  }
   const postRoutes = posts.map((post) => ({
     url: `${BASE_URL}/noticias/${post.slug}`,
     lastModified: post.updatedAt || post.publishedAt || post.createdAt,

@@ -1,10 +1,6 @@
-const COOKIE_NAME = "app_session_id";
 import { CATEGORIES } from "../drizzle/schema.js";
 import { getSessionCookieOptions } from "./_core/sdk.js";
-
 import { Resend } from 'resend';
-
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 import { systemRouter } from "./_core/systemRouter.js";
 import { publicProcedure, router, adminProcedure, editorProcedure } from "./_core/trpc.js";
 import { z } from "zod";
@@ -29,6 +25,9 @@ import {
 } from "./db.js";
 import { TRPCError } from "@trpc/server";
 import { storagePut } from "./storage.js";
+
+const COOKIE_NAME = "app_session_id";
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 // Helper to generate slug from title
 function generateSlug(title: string): string {

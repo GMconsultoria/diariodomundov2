@@ -64,9 +64,6 @@ importers:
       dotenv:
         specifier: ^17.2.2
         version: 17.2.3
-      drizzle-kit:
-        specifier: ^0.31.4
-        version: 0.31.5
       drizzle-orm:
         specifier: ^0.44.5
         version: 0.44.6(mysql2@3.15.1)(postgres@3.4.9)
@@ -134,7 +131,7 @@ importers:
         specifier: 5.9.3
         version: 5.9.3
       wouter:
-        specifier: ^3.3.5
+        specifier: 3.7.1
         version: 3.7.1(patch_hash=4utoqymkqegp7ldbtu4ndzqvum)(react@19.2.1)
       zod:
         specifier: ^4.1.12
@@ -155,6 +152,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.2.1
         version: 19.2.1(@types/react@19.2.1)
+      drizzle-kit:
+        specifier: ^0.31.4
+        version: 0.31.5
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
