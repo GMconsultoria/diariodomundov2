@@ -8,7 +8,7 @@ export async function GET(req: Request) {
   const code = url.searchParams.get("code") ?? "";
   const state = url.searchParams.get("state") ?? "";
   const origin = process.env.NODE_ENV === "development" ? url.origin : (ENV.baseUrl || url.origin);
-  const redirectUri = `${origin}/api/auth/callback`;
+  const redirectUri = `${origin}/api/oauth/callback`;
 
   try {
     // Exchange code for tokens

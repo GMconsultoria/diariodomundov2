@@ -10,7 +10,7 @@ export function GET(req: Request) {
   }
 
   const origin = process.env.NODE_ENV === "development" ? url.origin : (ENV.baseUrl || url.origin);
-  const redirectUri = `${origin}/api/auth/callback`;
+  const redirectUri = `${origin}/api/oauth/callback`;
 
   const authUrl = new URL("https://accounts.google.com/o/oauth2/v2/auth");
   authUrl.searchParams.set("client_id", ENV.googleClientId);
