@@ -1,5 +1,4 @@
 import { trpc } from "@/lib/trpc";
-import { TRPCClientError } from "@trpc/client";
 import { useCallback, useEffect, useMemo } from "react";
 
 type UseAuthOptions = {
@@ -17,47 +16,30 @@ export function useAuth(options?: UseAuthOptions) {
     refetchOnWindowFocus: false,
   });
 
-  const logoutMutation = trpc.auth.logout.useMutation({
-    onSuccess: () => {
-      utils.auth.me.setData(undefined, null);
-    },
-  });
-
   const logout = useCallback(async () => {
-    try {
-      await logoutMutation.mutateAsync();
-    } catch (error: unknown) {
-      if (
-        error instanceof TRPCClientError &&
-        error.data?.code === "UNAUTHORIZED"
-      ) {
-        return;
-      }
-      throw error;
-    } finally {
-      utils.auth.me.setData(undefined, null);
-      await utils.auth.me.invalidate();
-    }
-  }, [logoutMutation, utils]);
+    // Clear client-side state immediately, then redirect to the
+    // dedicated logout route which deletes the httpOnly cookie and
+    // redirects to /.
+    utils.auth.me.setData(undefined, null);
+    window.location.href = "/api/auth/logout";
+  }, [utils]);
 
   const state = useMemo(() => {
     return {
       user: meQuery.data ?? null,
-      loading: meQuery.isLoading || logoutMutation.isPending,
-      error: meQuery.error ?? logoutMutation.error ?? null,
+      loading: meQuery.isLoading,
+      error: meQuery.error ?? null,
       isAuthenticated: Boolean(meQuery.data),
     };
   }, [
     meQuery.data,
     meQuery.error,
     meQuery.isLoading,
-    logoutMutation.error,
-    logoutMutation.isPending,
   ]);
 
   useEffect(() => {
     if (!redirectOnUnauthenticated) return;
-    if (meQuery.isLoading || logoutMutation.isPending) return;
+    if (meQuery.isLoading) return;
     if (state.user) return;
     if (typeof window === "undefined") return;
     if (window.location.pathname === redirectPath) return;
@@ -67,7 +49,6 @@ export function useAuth(options?: UseAuthOptions) {
   }, [
     redirectOnUnauthenticated,
     redirectPath,
-    logoutMutation.isPending,
     meQuery.isLoading,
     state.user,
   ]);
@@ -78,3 +59,4 @@ export function useAuth(options?: UseAuthOptions) {
     logout,
   };
 }
+

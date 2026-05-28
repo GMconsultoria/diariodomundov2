@@ -1,8 +1,8 @@
-import { CATEGORIES } from "../drizzle/schema.js";
-import { getSessionCookieOptions } from "./_core/sdk.js";
+import { CATEGORIES } from "../drizzle/schema";
+import { getSessionCookieOptions } from "./_core/sdk";
 import { Resend } from 'resend';
-import { systemRouter } from "./_core/systemRouter.js";
-import { publicProcedure, router, adminProcedure, editorProcedure } from "./_core/trpc.js";
+import { systemRouter } from "./_core/systemRouter";
+import { publicProcedure, router, adminProcedure, editorProcedure } from "./_core/trpc";
 import { z } from "zod";
 import {
   createPost,
@@ -22,9 +22,9 @@ import {
   createContactMessage,
   getAllContactMessages,
   markMessageAsRead,
-} from "./db.js";
+} from "./db";
 import { TRPCError } from "@trpc/server";
-import { storagePut } from "./storage.js";
+import { storagePut } from "./storage";
 
 const COOKIE_NAME = "app_session_id";
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
@@ -46,16 +46,14 @@ export const appRouter = router({
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
-    logout: publicProcedure.mutation(({ ctx }) => {
-      const cookieOptions = getSessionCookieOptions(ctx.req);
-      ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
+    logout: publicProcedure.mutation(() => {
+      // Cookie deletion is handled by /api/auth/logout route (Next.js App Router)
       return { success: true } as const;
     }),
     deleteMe: publicProcedure.mutation(async ({ ctx }) => {
       if (!ctx.user) throw new TRPCError({ code: "UNAUTHORIZED" });
       await deleteUser(ctx.user.id);
-      const cookieOptions = getSessionCookieOptions(ctx.req);
-      ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
+      // Cookie deletion is handled by /api/auth/logout route (Next.js App Router)
       return { success: true };
     }),
   }),
