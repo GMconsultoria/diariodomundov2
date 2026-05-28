@@ -124,15 +124,11 @@ class SDKServer {
 
     const sessionUserId = session.openId;
     const signedInAt = new Date();
-    let user = await db.getUserByOpenId(sessionUserId);
+    const user = await db.getUserByOpenId(sessionUserId);
 
     // If user not in DB, sync from OAuth server automatically
     if (!user) {
       throw new ForbiddenError("User not found or not synced");
-    }
-
-    if (!user) {
-      throw new ForbiddenError("User not found");
     }
 
     await db.upsertUser({
