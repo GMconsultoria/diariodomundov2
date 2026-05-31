@@ -5,21 +5,9 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Sobre Nós",
   description:
-    "Conheça o Diário do Mundo, nossa história, missão, equipe editorial e compromisso com o jornalismo independente.",
+    "Conheça o Diário do Mundo, nossa história, missão e compromisso com o jornalismo independente.",
   alternates: { canonical: "/sobre" },
 };
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ATENÇÃO: Preencha os campos abaixo com as informações reais antes de
-// publicar o site e submeter para revisão do Google AdSense.
-// ─────────────────────────────────────────────────────────────────────────────
-const CNPJ      = "TODO: CNPJ real";          // Ex.: "00.000.000/0001-00"
-const ENDERECO  = "TODO: Endereço completo";   // Ex.: "Rua Exemplo, 123 — São Paulo/SP"
-const ANO_FUND  = "TODO: Ano de fundação";     // Ex.: "2023"
-const EDITOR_NOME = "TODO: Nome do Editor-Chefe";
-const EDITOR_BIO  = "TODO: Bio profissional com formação, experiência e especialidades. Mínimo 3 frases.";
-const EDITOR_EMAIL = "editor@diariodomundo.com";
-const EDITOR_LINKEDIN = ""; // Ex.: "https://linkedin.com/in/seunome" — deixe "" para ocultar
 
 export default function SobrePage() {
   return (
@@ -39,10 +27,10 @@ export default function SobrePage() {
           <section className="mb-10 space-y-4 text-foreground leading-relaxed">
             <h2 className="text-2xl font-bold text-foreground">Nossa História</h2>
             <p>
-              O <strong>Diário do Mundo</strong> é um portal de notícias independente fundado
-              em {ANO_FUND}, com sede em São Paulo. Nasceu da convicção de que o Brasil precisa
-              de mais fontes de informação que priorizem a qualidade editorial, a verificação de
-              fatos e a independência em relação a grupos políticos e econômicos.
+              O <strong>Diário do Mundo</strong> é um portal de notícias independente com sede em São Paulo.
+              Nasceu da convicção de que o Brasil precisa de mais fontes de informação que priorizem a
+              qualidade editorial, a verificação de fatos e a independência em relação a grupos políticos e
+              econômicos.
             </p>
             <p>
               Desde o início, nossa missão é cobrir os temas que mais impactam a vida dos
@@ -88,38 +76,6 @@ export default function SobrePage() {
             </div>
           </section>
 
-          {/* Equipe Editorial */}
-          <section className="mb-10">
-            <h2 className="text-2xl font-bold text-foreground mb-6">Equipe Editorial</h2>
-            <div className="flex items-start gap-4 p-5 border border-border rounded-xl bg-card">
-              <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
-                <span className="text-xl font-bold text-accent">
-                  {EDITOR_NOME.charAt(0)}
-                </span>
-              </div>
-              <div className="flex-1">
-                <p className="font-bold text-foreground text-lg">{EDITOR_NOME}</p>
-                <p className="text-accent text-sm font-semibold mb-2">Editor-Chefe</p>
-                <p className="text-sm text-muted-foreground leading-relaxed">{EDITOR_BIO}</p>
-                <div className="flex gap-4 mt-3 text-xs">
-                  <a href={`mailto:${EDITOR_EMAIL}`} className="text-accent hover:underline">
-                    {EDITOR_EMAIL}
-                  </a>
-                  {EDITOR_LINKEDIN && (
-                    <a
-                      href={EDITOR_LINKEDIN}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-accent hover:underline"
-                    >
-                      LinkedIn →
-                    </a>
-                  )}
-                </div>
-              </div>
-            </div>
-          </section>
-
           {/* Processo Editorial */}
           <section className="mb-10 space-y-4 text-foreground leading-relaxed">
             <h2 className="text-2xl font-bold text-foreground">Processo Editorial</h2>
@@ -143,36 +99,10 @@ export default function SobrePage() {
             </p>
           </section>
 
-          {/* Informações Legais */}
-          <section className="mb-10 p-6 bg-muted rounded-xl border border-border">
-            <h2 className="text-2xl font-bold text-foreground mb-4">Informações Legais</h2>
-            <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-              <div>
-                <dt className="font-bold text-foreground">CNPJ</dt>
-                <dd className="text-muted-foreground">{CNPJ}</dd>
-              </div>
-              <div>
-                <dt className="font-bold text-foreground">Sede</dt>
-                <dd className="text-muted-foreground">{ENDERECO}</dd>
-              </div>
-              <div>
-                <dt className="font-bold text-foreground">Fundação</dt>
-                <dd className="text-muted-foreground">{ANO_FUND}</dd>
-              </div>
-              <div>
-                <dt className="font-bold text-foreground">Contato</dt>
-                <dd className="text-muted-foreground">
-                  <a href="mailto:contato@diariodomundo.com" className="text-accent hover:underline">
-                    contato@diariodomundo.com
-                  </a>
-                </dd>
-              </div>
-            </dl>
-          </section>
-
         </div>
       </main>
       <Footer />
     </div>
   );
 }
+
