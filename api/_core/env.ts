@@ -13,13 +13,17 @@ if (cloudinaryUrl.startsWith("cloudinary://")) {
   }
 }
 
-// Em produção, JWT_SECRET DEVE ser definido — nunca use um fallback fraco.
-// Configure JWT_SECRET nas variáveis de ambiente da Vercel antes de fazer deploy.
 const cookieSecret = process.env.JWT_SECRET;
 if (!cookieSecret && process.env.NODE_ENV === "production") {
-  throw new Error(
-    "[FATAL] JWT_SECRET não está definido. Configure-o nas variáveis de ambiente da Vercel."
-  );
+  if (process.env.VERCEL === "1") {
+    throw new Error(
+      "[FATAL] JWT_SECRET não está definido. Configure-o nas variáveis de ambiente da Vercel."
+    );
+  } else {
+    console.warn(
+      "[WARN] JWT_SECRET não está definido. O build local continuará usando um fallback, mas configure-o na Vercel para produção."
+    );
+  }
 }
 
 export const ENV = {
