@@ -34,6 +34,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: BASE_URL,
   },
+  other: {
+    "google-adsense-account": "ca-pub-1426811176615814",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
